@@ -1,0 +1,77 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreferenceCompat
+        app:key="notifications"
+        app:title="Enable message notifications" />
+
+    <Preference
+        android:id="@+id/report_feedback"
+        app:key="report"
+        app:title="Send feedback"
+        app:summary="Report technical issues or suggest new features" />
+
+    <PreferenceCategory android:title="Terminal Panel">
+
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+        <Preference
+            android:title="Change Terminal"
+            android:selectable="true" />
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

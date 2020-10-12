@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <!--        <item name="android:statusBarColor">@color/primaryDarkColor</item>-->
+        <!--        <item name="android:navigationBarColor">@color/primaryDarkColor</item>-->
+
+        <!--        <item name="colorSurface">@color/primaryColor</item>-->
+        <!--        <item name="colorPrimary">@color/SpotifyColor</item>-->
+        <!--        <item name="colorOnPrimary">@color/primaryDarkColor</item>-->
+
+        <!--        <item name="colorSecondary">@color/SpotifyColor</item>-->
+
+
+        <!--        <item name="colorPrimaryVariant">#000000</item>-->
+        <!--        <item name="colorOnPrimary">#FF2962FF</item>-->
+        <!--        <item name="colorSecondary">#FF2962FF</item>-->
+        <!--        <item name="colorSecondaryVariant">#0039CB</item>-->
+        <!--        <item name="colorOnSecondary">#FFFFFF</item>-->
+        <!--        <item name="colorError">#F44336</item>-->
+        <!--        <item name="colorOnError">#FFFFFF</item>-->
+        <!--        <item name="colorOnSurface">#212121</item>-->
+        <!--        <item name="colorOnBackground">#212121</item>-->
+        <!--        <item name="backgroundColor">#FF2962FF</item>-->
+
+        <!--Material color attributes (dark theme) -->
+        <item name="colorPrimary">@color/SpotifyColor</item>
+        <item name="colorPrimaryVariant">@color/SpotifyColor</item>
+        <item name="colorSecondary">@color/SpotifyColor</item>
+        <item name="colorSecondaryVariant">@color/SpotifyColor</item>
+        <item name="android:colorBackground">@color/black_800</item>
+        <item name="colorSurface">@color/black_900</item>
+        <item name="colorError">@color/red_200</item>
+        <item name="colorOnPrimary">@color/black_900</item>
+        <item name="colorOnSecondary">@color/black_900</item>
+        <item name="colorOnBackground">@color/white_50</item>
+        <item name="colorOnSurface">@color/white_50</item>
+        <item name="colorOnError">@color/black_900</item>
+
+
+    </style>
+
+
+</resources>

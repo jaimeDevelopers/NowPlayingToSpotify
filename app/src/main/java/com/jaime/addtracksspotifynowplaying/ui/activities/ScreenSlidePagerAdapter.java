@@ -1,4 +1,4 @@
-package com.jaime.addtracksspotifynowplaying.ui.main;
+package com.jaime.addtracksspotifynowplaying.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -28,7 +28,7 @@ public class ScreenSlidePagerAdapter extends FragmentStateAdapter {
                 fragment = Music.newInstance(position);
                 break;
             case 1:
-                fragment = Settings.newInstance(position);
+                fragment = Music.newInstance(position);
         }
         return fragment;
     }
