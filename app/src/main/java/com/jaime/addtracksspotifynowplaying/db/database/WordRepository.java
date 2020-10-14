@@ -34,4 +34,16 @@ class WordRepository {
             mWordDao.insert(word);
         });
     }
+
+    void deleteall() {
+        WordRoomDatabase.databaseWriteExecutor.execute(() -> {
+            mWordDao.deleteAll();
+        });
+    }
+
+    LiveData<Word> getItemById(int itemId) {
+        return mWordDao.getItemById(itemId);
+    }
+
+
 }

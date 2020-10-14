@@ -9,22 +9,33 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jaime.addtracksspotifynowplaying.R;
+import com.jaime.addtracksspotifynowplaying.db.database.Word;
+import com.jaime.addtracksspotifynowplaying.db.database.WordListAdapter;
+import com.jaime.addtracksspotifynowplaying.db.database.WordViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Music extends Fragment {
 
+
+    private int jai = 1;
 
     // Member variables.
     private RecyclerView mRecyclerView;
     private ArrayList<Sport> mSportsData;
     private SportsAdapter mAdapter;
 
+    private WordViewModel mWordViewModel;
 
     public Music() {
 
@@ -54,12 +65,28 @@ public class Music extends Fragment {
 
         FloatingActionButton fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 //Intent intent = new Intent(getContext(), NewWordActivity.class);
                 //startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
-                clearData();
-                Toast.makeText(getContext(), R.string.update, Toast.LENGTH_LONG).show();
+                //clearData();
+                //Toast.makeText(getContext(), R.string.update, Toast.LENGTH_LONG).show();
+                //Word word = new Word("1");
+                //mWordViewModel.deleteall();
+
+
+                mWordViewModel.getItemById(6).observe(getViewLifecycleOwner(), words -> {
+                    // Update the cached copy of the words in the adapter.
+                    //adapter.setWords(words);
+
+                    if (words == null) {
+                        System.out.println("es nulo!!!");
+                        return;
+                    }
+                    System.out.println("ESTO ES LO QUE TENGO " + words.getCity());
+                    Toast.makeText(getContext(), words.getCity(), Toast.LENGTH_LONG).show();
+                });
 
 
             }
@@ -69,18 +96,74 @@ public class Music extends Fragment {
         // Initialize the RecyclerView.
         mRecyclerView = root.findViewById(R.id.my_recycler_view);
 
-        // Set the Layout Manager.
+        final WordListAdapter adapter = new WordListAdapter(getContext());
+        mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Initialize the ArrayList that will contain the data.
-        mSportsData = new ArrayList<>();
 
-        // Initialize the adapter and set it to the RecyclerView.
-        mAdapter = new SportsAdapter(getContext(), mSportsData);
-        mRecyclerView.setAdapter(mAdapter);
+        // Get a new or existing ViewModel from the ViewModelProvider.
+        mWordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
 
-        // Get the data.
-        initializeData();
+        // Add an observer on the LiveData returned by getAlphabetizedWords.
+        // The onChanged() method fires when the observed data changes and the activity is
+        // in the foreground.
+        mWordViewModel.getAllWords().observe(getViewLifecycleOwner(), words -> {
+            // Update the cached copy of the words in the adapter.
+            adapter.setWords(words);
+        });
+
+        //mWordViewModel.deleteall();
+
+        Word word = new Word(1, "JAIME", "ESPAÑA");
+        mWordViewModel.insert(word);
+
+        word = new Word(2, "Lucia", "Mexico");
+        mWordViewModel.insert(word);
+
+
+        word = new Word(3, "TEO", "China");
+        mWordViewModel.insert(word);
+
+
+        mWordViewModel.getItemById(2).observe(getViewLifecycleOwner(), words -> {
+            // Update the cached copy of the words in the adapter.
+            //adapter.setWords(words);
+            assert words != null;
+            System.out.println("ESTO ES LO QUE TENGO " + words.getCity());
+            Toast.makeText(getContext(), words.getCity(), Toast.LENGTH_SHORT).show();
+        });
+        //LiveData<Word> jaime = mWordViewModel.getItemById(3);
+
+
+        //
+//
+//        mWordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
+//
+//
+//        // Add an observer on the LiveData returned by getAlphabetizedWords.
+//        // The onChanged() method fires when the observed data changes and the activity is
+//        // in the foreground.
+//        mWordViewModel.getAllWords().observe(getViewLifecycleOwner(), new Observer<List<Word>>() {
+//            @Override
+//            public void onChanged(@Nullable final List<Word> words) {
+//                // Update the cached copy of the words in the adapter.
+//                adapter.setWords(words);
+//            }
+//        });
+
+//
+//        // Set the Layout Manager.
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//
+//        // Initialize the ArrayList that will contain the data.
+//        mSportsData = new ArrayList<>();
+//
+//        // Initialize the adapter and set it to the RecyclerView.
+//        mAdapter = new SportsAdapter(getContext(), mSportsData);
+//        mRecyclerView.setAdapter(mAdapter);
+//
+//        // Get the data.
+//        initializeData();
 
 
         // Helper class for creating swipe to dismiss and drag and drop

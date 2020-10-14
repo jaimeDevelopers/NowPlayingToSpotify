@@ -27,14 +27,14 @@ public class ScreenSlidePagerAdapter extends FragmentStateAdapter {
             case 0:
                 fragment = Music.newInstance(position);
                 break;
-            case 1:
-                fragment = Music.newInstance(position);
+            //case 1:
+            //fragment = Music.newInstance(position);
         }
         return fragment;
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 1;
     }
 }
