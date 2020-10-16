@@ -9,25 +9,26 @@ import androidx.room.Update;
 
 import java.util.List;
 
-@Dao
-public interface WordDao {
 
-    // allowing the insert of the same word multiple times by passing a
+@Dao
+public interface SongDao {
+
+    // allowing the insert of the same Song multiple times by passing a
     // conflict resolution strategy
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Word word);
+    void insert(Song Song);
 
-    @Query("DELETE FROM word_table")
+    @Query("DELETE FROM Song_table")
     void deleteAll();
 
-    @Query("SELECT * from word_table")
-    LiveData<List<Word>> getAlphabetizedWords();
+    @Query("SELECT * from Song_table")
+    LiveData<List<Song>> getAlphabetizedSongs();
 
     @Update
-    void updateWord(Word word);
+    void updateSong(Song Song);
 
-    @Query("SELECT * FROM word_table WHERE id LIKE :itemId LIMIT 1")
-    LiveData<Word> getItemById(int itemId);
+    @Query("SELECT * FROM Song_table WHERE id LIKE :itemId LIMIT 1")
+    Song getItemById(int itemId);
 
 
 }

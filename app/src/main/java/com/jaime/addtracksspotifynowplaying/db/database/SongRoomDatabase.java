@@ -9,22 +9,22 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Word.class}, version = 1, exportSchema = false)
-public abstract class WordRoomDatabase extends RoomDatabase {
+@Database(entities = {Song.class}, version = 1, exportSchema = false)
+public abstract class SongRoomDatabase extends RoomDatabase {
 
-    public abstract WordDao wordDao();
+    public abstract SongDao SongDao();
 
-    private static volatile WordRoomDatabase INSTANCE;
+    private static volatile SongRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    static WordRoomDatabase getDatabase(final Context context) {
+    public static SongRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
-            synchronized (WordRoomDatabase.class) {
+            synchronized (SongRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            WordRoomDatabase.class, "word_database")
+                            SongRoomDatabase.class, "Song_database")
                             .build();
                 }
             }

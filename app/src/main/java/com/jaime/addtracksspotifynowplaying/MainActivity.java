@@ -62,25 +62,9 @@ public class MainActivity extends AppCompatActivity {
                 }).attach();
 
 
-        System.out.println("El resultado esssssssss " + Build.VERSION.SDK_INT);
-        System.out.println("El resultado es " + Build.VERSION.SDK_INT);
+        //System.out.println("El resultado esssssssss " + Build.VERSION.SDK_INT);
+        //System.out.println("El resultado es " + Build.VERSION.SDK_INT);
 
-        createNotificationChannel();
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setContentTitle("Prueba")
-                .setContentText("notificacion");
-
-        // Creates the intent needed to show the notification
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(contentIntent);
-
-
-        // Add as notification
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, builder.build());
 
         if (!isNotificationServiceEnabled()) {
             AlertDialog enableNotificationListenerAlertDialog = buildNotificationServiceAlertDialog();
@@ -141,23 +125,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
-    }
-
-
-    private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "JAIME.PRUEBA";
-            String description = "Esto es un description";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
     }
 
 

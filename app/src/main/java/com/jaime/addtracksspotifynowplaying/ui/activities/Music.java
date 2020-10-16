@@ -1,6 +1,13 @@
 package com.jaime.addtracksspotifynowplaying.ui.activities;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -16,26 +24,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.jaime.addtracksspotifynowplaying.MainActivity;
 import com.jaime.addtracksspotifynowplaying.R;
-import com.jaime.addtracksspotifynowplaying.db.database.Word;
-import com.jaime.addtracksspotifynowplaying.db.database.WordListAdapter;
-import com.jaime.addtracksspotifynowplaying.db.database.WordViewModel;
+import com.jaime.addtracksspotifynowplaying.db.database.Song;
+import com.jaime.addtracksspotifynowplaying.db.database.SongListAdapter;
+import com.jaime.addtracksspotifynowplaying.db.database.SongViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 
 public class Music extends Fragment {
 
 
-    private int jai = 1;
+    private int jai = 4;
 
     // Member variables.
     private RecyclerView mRecyclerView;
-    private ArrayList<Sport> mSportsData;
-    private SportsAdapter mAdapter;
 
-    private WordViewModel mWordViewModel;
+
+    private SongViewModel mSongViewModel;
 
     public Music() {
 
@@ -63,30 +75,71 @@ public class Music extends Fragment {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
 
+        createNotificationChannel();
+
+
         FloatingActionButton fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(getContext(), NewWordActivity.class);
-                //startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
+                //Intent intent = new Intent(getContext(), NewSongActivity.class);
+                //startActivityForResult(intent, NEW_Song_ACTIVITY_REQUEST_CODE);
                 //clearData();
                 //Toast.makeText(getContext(), R.string.update, Toast.LENGTH_LONG).show();
-                //Word word = new Word("1");
-                //mWordViewModel.deleteall();
+                //Song Song = new Song("1");
+                //mSongViewModel.deleteall();
 
 
-                mWordViewModel.getItemById(6).observe(getViewLifecycleOwner(), words -> {
-                    // Update the cached copy of the words in the adapter.
-                    //adapter.setWords(words);
+                //mSongViewModel.deleteall();
 
-                    if (words == null) {
-                        System.out.println("es nulo!!!");
-                        return;
-                    }
-                    System.out.println("ESTO ES LO QUE TENGO " + words.getCity());
-                    Toast.makeText(getContext(), words.getCity(), Toast.LENGTH_LONG).show();
-                });
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")
+                        .setSmallIcon(R.mipmap.ic_launcher_round)
+                        .setContentTitle("Prueba")
+                        .setContentText("notificacion");
+
+                // Creates the intent needed to show the notification
+                Intent notificationIntent = new Intent(getContext(), MainActivity.class);
+                PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                builder.setContentIntent(contentIntent);
+
+
+                // Add as notification
+                NotificationManager manager = (NotificationManager) requireActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                manager.notify(0, builder.build());
+
+
+                //Song Song = new Song( "TEO", "China");
+                //mSongViewModel.insert(Song);
+
+
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        Song jaime = mSongViewModel.getItemById(jai);
+//                        if (jaime == null) {
+//                            System.out.println("es nulo!!!@@@@@@");
+//                            return;
+//                        }
+//                        System.out.println("eeeeeeeafkjasfasklfa2@@@@@ -->" + jaime.getId());
+//                        jai ++;
+//
+//                    }
+//                }).start();
+
+
+//                mSongViewModel.getItemById(6).observe(getViewLifecycleOwner(), Songs -> {
+//                    // Update the cached copy of the Songs in the adapter.
+//                    //adapter.setSongs(Songs);
+//
+//                    if (Songs == null) {
+//                        System.out.println("es nulo!!!");
+//                        return;
+//                    }
+//                    System.out.println("ESTO ES LO QUE TENGO " + Songs.getCity());
+//                    Toast.makeText(getContext(), Songs.getCity(), Toast.LENGTH_LONG).show();
+//                });
 
 
             }
@@ -96,58 +149,76 @@ public class Music extends Fragment {
         // Initialize the RecyclerView.
         mRecyclerView = root.findViewById(R.id.my_recycler_view);
 
-        final WordListAdapter adapter = new WordListAdapter(getContext());
+        final SongListAdapter adapter = new SongListAdapter(getContext());
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
         // Get a new or existing ViewModel from the ViewModelProvider.
-        mWordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
+        mSongViewModel = new ViewModelProvider(this).get(SongViewModel.class);
 
-        // Add an observer on the LiveData returned by getAlphabetizedWords.
+        // Add an observer on the LiveData returned by getAlphabetizedSongs.
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.
-        mWordViewModel.getAllWords().observe(getViewLifecycleOwner(), words -> {
-            // Update the cached copy of the words in the adapter.
-            adapter.setWords(words);
+        mSongViewModel.getAllSongs().observe(getViewLifecycleOwner(), Songs -> {
+            // Update the cached copy of the Songs in the adapter.
+            adapter.setSongs(Songs);
         });
 
-        //mWordViewModel.deleteall();
+        //mSongViewModel.deleteall();
 
-        Word word = new Word(1, "JAIME", "ESPAÑA");
-        mWordViewModel.insert(word);
+        Song Song = new Song("JAIME", "ESPAÑA");
+        mSongViewModel.insert(Song);
 
-        word = new Word(2, "Lucia", "Mexico");
-        mWordViewModel.insert(word);
-
-
-        word = new Word(3, "TEO", "China");
-        mWordViewModel.insert(word);
+        Song = new Song("Lucia", "Mexico");
+        mSongViewModel.insert(Song);
 
 
-        mWordViewModel.getItemById(2).observe(getViewLifecycleOwner(), words -> {
-            // Update the cached copy of the words in the adapter.
-            //adapter.setWords(words);
-            assert words != null;
-            System.out.println("ESTO ES LO QUE TENGO " + words.getCity());
-            Toast.makeText(getContext(), words.getCity(), Toast.LENGTH_SHORT).show();
-        });
-        //LiveData<Word> jaime = mWordViewModel.getItemById(3);
+        Song = new Song("TEO", "China");
+        mSongViewModel.insert(Song);
 
 
-        //
+//        mSongViewModel.getItemById(2).observe(getViewLifecycleOwner(), Songs -> {
+//             //Update the cached copy of the Songs in the adapter.
+//            //adapter.setSongs(Songs);
+//            if (Songs ==null){
+//                System.out.println("Entro aquiiiiiiiiii " );
 //
-//        mWordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
+//                return;
+//            }
+//            System.out.println("Cris Uni ESTO ES LO QUE TENGO " + Songs.getCity());
+//            Toast.makeText(getContext(), Songs.getCity(), Toast.LENGTH_SHORT).show();
+//        });
+        //LiveData<Song> jaime = mSongViewModel.getItemById(3);
+//
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                Song jaime = mSongViewModel.getItemById(1);
+//                if (jaime == null) {
+//                    System.out.println("es nulo!!! --->");
+//                    return;
+//                }
+//                System.out.println("eeeeeeeafkjasfasklfa ----> " + jaime.getCity());
 //
 //
-//        // Add an observer on the LiveData returned by getAlphabetizedWords.
+//            }
+//        }).start();
+
+
+//
+//        mSongViewModel = new ViewModelProvider(this).get(SongViewModel.class);
+//
+//
+//        // Add an observer on the LiveData returned by getAlphabetizedSongs.
 //        // The onChanged() method fires when the observed data changes and the activity is
 //        // in the foreground.
-//        mWordViewModel.getAllWords().observe(getViewLifecycleOwner(), new Observer<List<Word>>() {
+//        mSongViewModel.getAllSongs().observe(getViewLifecycleOwner(), new Observer<List<Song>>() {
 //            @Override
-//            public void onChanged(@Nullable final List<Word> words) {
-//                // Update the cached copy of the words in the adapter.
-//                adapter.setWords(words);
+//            public void onChanged(@Nullable final List<Song> Songs) {
+//                // Update the cached copy of the Songs in the adapter.
+//                adapter.setSongs(Songs);
 //            }
 //        });
 
@@ -216,9 +287,9 @@ public class Music extends Fragment {
 //        helper.attachToRecyclerView(mRecyclerView);
 
 
-        // Put initial data into the word list.
+        // Put initial data into the Song list.
         //  for (int i = 0; i < 20; i++) {
-        //      mWordList.addLast("Word " + i);
+        //      mSongList.addLast("Song " + i);
         //  }
 
 
@@ -227,7 +298,7 @@ public class Music extends Fragment {
 
 // Get a handle to the RecyclerView.
 // Create an adapter and supply the data to be displayed.
-        // mAdapter = new WordListAdapter(getContext(), mWordList);
+        // mAdapter = new SongListAdapter(getContext(), mSongList);
 // Connect the adapter with the RecyclerView.
         //      mRecyclerView.setAdapter(mAdapter);
 // Give the RecyclerView a default layout manager.
@@ -237,42 +308,26 @@ public class Music extends Fragment {
         return root;
     }
 
-
-    private void initializeData() {
-        // Get the resources from the XML file.
-        String[] sportsList = getResources()
-                .getStringArray(R.array.sports_titles);
-        String[] sportsInfo = getResources()
-                .getStringArray(R.array.sports_info);
-
-        // Clear the existing data (to avoid duplication).
-        mSportsData.clear();
-
-        // Create the ArrayList of Sports objects with the titles and
-        // information about each sport
-        for (int i = 0; i < sportsList.length; i++) {
-            mSportsData.add(new Sport(sportsList[i], sportsInfo[i]));
-        }
-
-
-        // Notify the adapter of the change.
-        mAdapter.notifyDataSetChanged();
-    }
-
-
-    private void clearData() {
-        // Clear the existing data (to avoid duplication).
-        mSportsData.clear();
-
-
-        // Notify the adapter of the change.
-        mAdapter.notifyDataSetChanged();
-    }
-
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "JAIME.PRUEBA";
+            String description = "ESTADOS UNIDOS";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = requireActivity().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
 

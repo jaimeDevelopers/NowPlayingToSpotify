@@ -1,16 +1,15 @@
 package com.jaime.addtracksspotifynowplaying.db.database;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "word_table")
-public class Word {
+@Entity(tableName = "Song_table")
+public class Song {
 
 
-    @PrimaryKey
-    private int id;
+    @PrimaryKey(autoGenerate = true)
+    private int id = 0;
 
     @ColumnInfo(name = "name")
     private String name;
@@ -18,13 +17,15 @@ public class Word {
     @ColumnInfo(name = "city")
     private String city;
 
-    //WORD = PERSON
-    public Word(int id, String name, String city) {
-        this.id = id;
+    //Song = PERSON
+    public Song(String name, String city) {
         this.name = name;
         this.city = city;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;
@@ -39,7 +40,7 @@ public class Word {
     }
 
 
-    //public String getWord() {
+    //public String getSong() {
     //    return this.name;
     //}
 
