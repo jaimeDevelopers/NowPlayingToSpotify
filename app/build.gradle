@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+
+
+
+
 android {
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
@@ -28,24 +32,43 @@ android {
 
 }
 
+
+
+
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+}
+
+
+
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'])
 
+    def paging_version = "2.1.2"
+    implementation "androidx.paging:paging-runtime:$paging_version"
 
-
-
+    implementation "org.apache.commons:commons-text:1.7"
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.preference:preference:1.1.1'
-    implementation 'androidx.navigation:navigation-fragment:2.3.0'
-    implementation 'androidx.navigation:navigation-ui:2.3.0'
+    implementation 'androidx.navigation:navigation-fragment:2.3.1'
+    implementation 'androidx.navigation:navigation-ui:2.3.1'
 
 
-    // optional - RxJava support for Room
+    implementation 'com.github.kaaes:spotify-web-api-android:0.4.1'
+    implementation "com.spotify.android:auth:1.2.3"
+
+
+    //implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    //implementation 'com.spotify.sdk:spotify-auth-beta23-noConnect-2.20b@aar'
+    //implementation 'com.github.kaaes:spotify-web-api-android:0.4.1'
+
+
 
 
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
@@ -56,7 +79,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
 
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

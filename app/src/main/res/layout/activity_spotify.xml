@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2018 Google Inc.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            app:title="@string/app_name"
+
+            />
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+
+            >
+
+
+            <TextView
+                android:id="@+id/titleDetail"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="1º Click on Connect\n2º Set a playlist name\n3º Click on synchronize\n\n*A playlist with less than 10,000 songs\n*In order to save data, If you delete the playlist or songs on spotify this app did not know, click in synchronize to reset"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+            <!--    <TextView-->
+            <!--        android:id="@+id/newsTitleDetail"-->
+            <!--        style="@style/TextAppearance.AppCompat.Subhead"-->
+            <!--        android:layout_width="wrap_content"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:padding="16dp"-->
+            <!--        android:text="aaa"-->
+            <!--        android:textColor="?android:textColorSecondary" />-->
+
+            <!--    <TextView-->
+            <!--        android:id="@+id/subTitleDetail"-->
+            <!--        style="@style/TextAppearance.AppCompat.Subhead"-->
+            <!--        android:layout_width="wrap_content"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:padding="16dp"-->
+            <!--        android:text="qwerty" />-->
+
+
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:id="@+id/playlistname"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="@string/PlayListName"
+                app:endIconContentDescription="Save playlist name"
+                app:endIconDrawable="@drawable/ic_baseline_check_circle_24"
+                app:endIconMode="custom"
+
+
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="textAutoCorrect"
+                    android:singleLine="true"
+                    android:textAlignment="center"
+                    android:textSize="20sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <Button
+                style="@style/buttonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:onClick="onRequestsynchronize"
+                android:text="synchronize the playlist" />
+
+
+            <Button
+                style="@style/buttonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:onClick="onRequestCodeClicked"
+                android:text="@string/btn_req_code" />
+
+
+            <Button
+                android:id="@+id/btn_clear"
+                style="@style/buttonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:onClick="onClearCredentialsClicked"
+                android:text="@string/btn_clear_credentials" />
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

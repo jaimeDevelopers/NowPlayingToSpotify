@@ -13,34 +13,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="5dp"
+        android:layout_margin="2dp"
 
         >
 
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/Notification"
             style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="aaa" />
+            android:text="Jaime by developersads dfsafasdfasdfsdf weafadsf"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:padding="3dp" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/Search"
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="?android:textColorSecondary"
-            android:padding="8dp"
-            android:text="ee" />
+            android:text="Jaime by developersads dfsafasdfasdfsdf weafadsf"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:padding="3dp" />
 
-        <TextView
-            android:id="@+id/subTitle"
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="zzzz" />
 
     </LinearLayout>
 

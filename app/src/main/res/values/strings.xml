@@ -4,88 +4,27 @@
     <string name="tab_text_2">Settings</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="title_activity_main2">MainActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="title_activity_main">MainActivity</string>
-
-
-    <string name="by">&#032;by&#032;</string>
-
-
     <string name="action_settings">Settings</string>
     <string name="service_label">nowplayingspotify</string>
 
     <!-- Strings related to the Alert Dialog -->
-    <string name="notification_listener_service">"Notification Listener Service"</string>
-    <string name="notification_listener_service_explanation">"For the app to work you need to enable the Notification Listener Service. Enable it now?"</string>
+    <string name="notification_listener_service">"Reset the playlist"</string>
+    <string name="notification_listener_service_explanation">"The database will be synchronized with the playlist "</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="stop">Stop</string>
 
-    <string name="writesomething">2019 Now Playing</string>
     <string name="your_playlist">New PlayList Name</string>
     <string name="update"> Update name </string>
 
-    <string name="remember"> Remember press the buttom to update playlist\' name </string>
-    <string name="test"> Re-open to Connect to spotify </string>
-    <string name="test_create">I create a playlist to Test the app and refresh cache</string>
     <string name="Buttonplaylistname">Apply</string>
-    <string name="PlayListName">2019 Now Playing </string>
+    <string name="PlayListName">Playlist name</string>
     <string name="Paypal">https://paypal.me/jaimedevelopers</string>
     <string name="email">jaimedevelopers@gmail.com</string>
-    <string name="ConnectTOspotify">Connect to spotify</string>
-    <string name="enableNotification">Enable Notification listener</string>
-    <string name="testTheApp">Test the app and refresh cache</string>
 
 
-    <string-array name="sports_titles">
-        <item>Baseball</item>
-        <item>Badminton</item>
-        <item>Basketball</item>
-        <item>Bowling</item>
-        <item>Cycling</item>
-        <item>Golf</item>
-        <item>Running</item>
-        <item>Soccer</item>
-        <item>Swimming</item>
-        <item>Table Tennis</item>
-        <item>Tennis</item>
-    </string-array>
-
-    <string-array name="sports_info">
-        <item>Here is some Baseball news!</item>
-        <item>Here is some Badminton news!</item>
-        <item>Here is some Basketball news!</item>
-        <item>Here is some Bowling news!</item>
-        <item>Here is some Cycling news!</item>
-        <item>Here is some Golf news!</item>
-        <item>Here is some Running news!</item>
-        <item>Here is some Soccer news!</item>
-        <item>Here is some Swimming news!</item>
-        <item>Here is some Table Tennis news!</item>
-        <item>Here is some Tennis news!</item>
-    </string-array>
+    <string name="btn_clear_credentials">Clear WebView Credentials</string>
+    <string name="btn_req_code">Connect</string>
 
 
 </resources>

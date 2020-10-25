@@ -1,10 +1,14 @@
 package com.jaime.addtracksspotifynowplaying.ui.activities;
 
+import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -25,13 +30,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jaime.addtracksspotifynowplaying.MainActivity;
+import com.jaime.addtracksspotifynowplaying.MyValues;
 import com.jaime.addtracksspotifynowplaying.R;
 import com.jaime.addtracksspotifynowplaying.db.database.Song;
 import com.jaime.addtracksspotifynowplaying.db.database.SongListAdapter;
 import com.jaime.addtracksspotifynowplaying.db.database.SongViewModel;
+import com.jaime.addtracksspotifynowplaying.sources.Spotify;
 
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -40,8 +51,6 @@ import java.util.concurrent.Future;
 
 public class Music extends Fragment {
 
-
-    private int jai = 4;
 
     // Member variables.
     private RecyclerView mRecyclerView;
@@ -91,22 +100,44 @@ public class Music extends Fragment {
                 //mSongViewModel.deleteall();
 
 
-                //mSongViewModel.deleteall();
+                SharedPreferences pref = requireContext().getSharedPreferences(MyValues.PREFERENCES, Context.MODE_PRIVATE);
+                boolean spotify_enabled = pref.getBoolean("SPOTIFY_ENABLED", false);
 
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")
-                        .setSmallIcon(R.mipmap.ic_launcher_round)
-                        .setContentTitle("Prueba")
-                        .setContentText("notificacion");
-
-                // Creates the intent needed to show the notification
-                Intent notificationIntent = new Intent(getContext(), MainActivity.class);
-                PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                builder.setContentIntent(contentIntent);
+                if (spotify_enabled) {
 
 
-                // Add as notification
-                NotificationManager manager = (NotificationManager) requireActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-                manager.notify(0, builder.build());
+                    mSongViewModel.deleteall();
+                    Spotify testSpotify = new Spotify(requireContext(), requireActivity().getApplication());
+                    testSpotify.initPlaylist();
+
+
+                    //AlertDialog enableNotificationListenerAlertDialog = buildNotificationServiceAlertDialog();
+                    //enableNotificationListenerAlertDialog.show();
+
+
+                } else {
+                    Toast.makeText(getContext(), "Please, first enable spotify", Toast.LENGTH_SHORT).show();
+
+                }
+
+
+                // create
+
+
+//                NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")
+//                        .setSmallIcon(R.mipmap.ic_launcher_round)
+//                        .setContentTitle("Prueba")
+//                        .setContentText("notificacion");
+//
+//                // Creates the intent needed to show the notification
+//                Intent notificationIntent = new Intent(getContext(), MainActivity.class);
+//                PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                builder.setContentIntent(contentIntent);
+//
+//
+//                // Add as notification
+//                NotificationManager manager = (NotificationManager) requireActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+//                manager.notify(0, builder.build());
 
 
                 //Song Song = new Song( "TEO", "China");
@@ -151,7 +182,14 @@ public class Music extends Fragment {
 
         final SongListAdapter adapter = new SongListAdapter(getContext());
         mRecyclerView.setAdapter(adapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
+        //layoutManager.setStackFromEnd(true);
+        layoutManager.setReverseLayout(true);
+
+        layoutManager.setStackFromEnd(true);
+
+        mRecyclerView.setLayoutManager(layoutManager);
 
 
         // Get a new or existing ViewModel from the ViewModelProvider.
@@ -166,16 +204,18 @@ public class Music extends Fragment {
         });
 
         //mSongViewModel.deleteall();
+//
+//        Song Song = new Song("JAIME", "ESPAÑA");
+//        mSongViewModel.insert(Song);
+//
+//       Song = new Song("Lucia", "Mexico");
+//       mSongViewModel.insert(Song);
 
-        Song Song = new Song("JAIME", "ESPAÑA");
-        mSongViewModel.insert(Song);
 
-        Song = new Song("Lucia", "Mexico");
-        mSongViewModel.insert(Song);
+        //Song = new Song("TEO", "China");
+        //mSongViewModel.insert(Song);
 
-
-        Song = new Song("TEO", "China");
-        mSongViewModel.insert(Song);
+//        MainActivity.runLogin();
 
 
 //        mSongViewModel.getItemById(2).observe(getViewLifecycleOwner(), Songs -> {
@@ -328,6 +368,43 @@ public class Music extends Fragment {
             NotificationManager notificationManager = requireActivity().getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+
+    private AlertDialog buildNotificationServiceAlertDialog() {
+
+
+        SharedPreferences pref = requireContext().getSharedPreferences(MyValues.PREFERENCES, Context.MODE_PRIVATE);
+        String date = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
+        String playlistName = pref.getString("playlistName", date + " Now playing");         // getting String
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(requireContext());
+        alertDialogBuilder.setTitle(R.string.notification_listener_service);
+        alertDialogBuilder.setMessage(R.string.notification_listener_service_explanation + "\"" + playlistName + "\"");
+
+
+        alertDialogBuilder.setPositiveButton(R.string.yes,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+
+                    }
+                });
+        alertDialogBuilder.setNegativeButton(R.string.no,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+        alertDialogBuilder.setOnCancelListener(
+                new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+
+                    }
+                });
+
+        return (alertDialogBuilder.create());
     }
 
 

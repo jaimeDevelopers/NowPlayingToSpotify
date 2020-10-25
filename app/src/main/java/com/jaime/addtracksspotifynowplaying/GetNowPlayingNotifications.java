@@ -11,49 +11,71 @@ import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
-
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
+import android.widget.Toast;
 
 import com.jaime.addtracksspotifynowplaying.db.database.Song;
-import com.jaime.addtracksspotifynowplaying.db.database.SongDao;
-import com.jaime.addtracksspotifynowplaying.db.database.SongRepository;
-import com.jaime.addtracksspotifynowplaying.db.database.SongRoomDatabase;
-import com.jaime.addtracksspotifynowplaying.db.database.SongViewModel;
+import com.jaime.addtracksspotifynowplaying.sources.Spotify;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 
 public class GetNowPlayingNotifications extends NotificationListenerService {
 
 
-    //public static  Spotify Source = new Spotify();
+    private SharedPreferences pref;
+    String PackageName;
 
-    public static int SPOTIFY_REQUEST_CODE = 1337;
-
+    public static Spotify Source;
     //private SongViewModel mSongViewModel;
-    private SongRepository mRepository;
 
     public Context context;
     public Song prue;
 
-    int jaime = 0;
 
     @Override
     public void onCreate() {
         super.onCreate();
         this.context = getApplicationContext();
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(MyValues.PREFERENCES_NOTIFICATION, MODE_PRIVATE);
-        String PackageName = "com.google.intelligence.sense";
+
+        PackageName = MyValues.PACKAGE_NAME_UNDER_30;
         if (Build.VERSION.SDK_INT >= 30) {
-            PackageName = "com.google.android.as";
+            PackageName = MyValues.PACKAGE_NAME_30;
         }
 
-        SharedPreferences.Editor editor = pref.edit();
+
+        this.pref = getApplicationContext().getSharedPreferences(MyValues.PREFERENCES, MODE_PRIVATE);
+        SharedPreferences.Editor editor = this.pref.edit();
         editor.putString("PackageName", PackageName);  // Saving string
+
+        Map<String, String> language = new HashMap<String, String>();
+        language.put("en", " by ");
+        language.put("es", " de ");
+        language.put("de", " von ");
+        language.put("fr", " par ");
+        language.put("it", " di ");
+        language.put("nl", " van ");
+        language.put("pl", " - ");
+        language.put("pt", " de ");
+        language.put("ru", " , ");
+
+        editor.putString("split_util", language.get(Locale.getDefault().getLanguage()));  // Saving string
         editor.apply(); // commit changes
 
 
+        if (isNetworkAvailable()) {
+            Source = new Spotify(getApplicationContext(), getApplication());
+        } else {
+            Toast.makeText(context, "Connect to Internet, please", Toast.LENGTH_SHORT).show();
+        }
+        //
+        //Source.initPlaylist(playlistName);
+
+        //Source.checkAndRefreshSpotifyToken();
         //this.accountsPrefs = context.getSharedPreferences(Get_Now_Playing_Notifications.PREFERENCES_ACCOUNT_FILE_NAME, Context.MODE_PRIVATE);
         //this.namePlaylistPrefs = getApplicationContext().getSharedPreferences(Get_Now_Playing_Notifications.PREFERENCES_NAME_PLAYLIST, Context.MODE_PRIVATE);
         //this.Source.Check(Get_Now_Playing_Notifications.accountsPrefs);
@@ -65,7 +87,6 @@ public class GetNowPlayingNotifications extends NotificationListenerService {
         //
 
         // Get a new or existing ViewModel from the ViewModelProvider.
-        mRepository = new SongRepository(getApplication());
 
     }
 
@@ -85,34 +106,60 @@ public class GetNowPlayingNotifications extends NotificationListenerService {
     }
 
     private void matchNotificationCode(StatusBarNotification sbn) {
-        String packageName = sbn.getPackageName();
+        String notification = sbn.getPackageName();
 
-        //if (packageName.equals("com.google.intelligence.sense")) {
-        //if (packageName.equals("com.google.android.as")) {
+        if (isNetworkAvailable()) {
+
+            if (notification.equalsIgnoreCase(PackageName)) {
+
+                //if (notification.equals(PackageName)){
+                //this.context = getApplicationContext();
+                String title = sbn.getNotification().extras.getString("android.title");
+                String text = sbn.getNotification().extras.getString("android.text");
+                String package_name = sbn.getPackageName();
+                assert title != null;
+                Log.v("Notification title is", title);
+                assert text != null;
+                Log.v("Notification text is", text);
+                Log.v("N. Package Name", package_name);
+
+                this.pref = getApplicationContext().getSharedPreferences(MyValues.PREFERENCES, MODE_PRIVATE);
+                String lastsong = pref.getString("last_song", null);         // getting String
+                String date = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
+                String playlistName = pref.getString("playlistName", date + " Now playing");         // getting String
+
+                if (!title.equalsIgnoreCase(lastsong)) {
+                    SharedPreferences.Editor editor = this.pref.edit();
+                    editor.putString("last_song", title);  // Saving string
+                    editor.apply(); // commit changes
 
 
-        //this.context = getApplicationContext();
-        String title = sbn.getNotification().extras.getString("android.title");
-        String text = sbn.getNotification().extras.getString("android.text");
-        String package_name = sbn.getPackageName();
-        Log.v("Notification title is", title);
-        Log.v("Notification text is", text);
-        Log.v("N. Package Name", package_name);
+                    if (Source == null) {
+                        Source = new Spotify(getApplicationContext(), getApplication());
+                    }
 
 
-        mRepository = new SongRepository(getApplication());
-        mRepository.insert(new Song("text --> jaime:" + jaime, title));
-        jaime++;
+                    Source.recognizedSong(title, playlistName);
 
-        prue = mRepository.getItemById(10000);
+                    //Source.searchsong(title);
+                    //Source.Create_a_playlist();
+
+                }
+            }
+
+            //mRepository = new SongRepository(getApplication());
+            //jaime++;
+
+//            prue = mRepository.getItemById(10000);
+//            if (prue == null) {
+//                System.out.println("El valor es nulo");
+//            } else {
+//                System.out.println("aaa" + prue.getCity());
+//
+//            }
 
 
-        if (prue == null) {
-            System.out.println("El valor es nulo");
-        } else {
-            System.out.println("aaa" + prue.getCity());
-
-        }
+            //Source.Check();
 
 
 //        Thread thread = new Thread() {
@@ -147,7 +194,7 @@ public class GetNowPlayingNotifications extends NotificationListenerService {
 //                }
 
 
-//            }
+        }
 
     }
     // }

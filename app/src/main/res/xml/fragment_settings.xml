@@ -1,75 +1,82 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreferenceCompat
-        app:key="notifications"
-        app:title="Enable message notifications" />
 
     <Preference
-        android:id="@+id/report_feedback"
-        app:key="report"
-        app:title="Send feedback"
-        app:summary="Report technical issues or suggest new features" />
+        android:selectable="false"
+        android:enabled="true"
+        android:key="info"
+        android:title="INFO:"
+        android:summary="1º Connect to Spotify.\n2º Enable notification listener.\n*Without Internet the app does not work" />
 
-    <PreferenceCategory android:title="Terminal Panel">
+
+    <PreferenceCategory android:title="Connect to your music service">
 
         <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
+            android:id="@+id/spotify"
+            app:key="spotify"
+            android:title="Connect to spotify"
+            app:summary="Connect this app with spotify" />
+
         <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
+            android:id="@+id/soundcloud"
+            android:enabled="false"
+            app:key="soundcloud"
+            android:title="Connect to soundcloud"
+            app:summary="Connect this app with soundcloud *not stable*" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="Enable notification listener">
+
         <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
+            android:id="@+id/enablenotification"
+            app:key="enable"
+            android:title="Enable notification listener"
+            app:summary="In order to get the song title and add it to the playlist" />
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="Other">
+
         <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
+            android:id="@+id/song_bounty"
+            app:key="song_bounty"
+            app:title="Report songs fails"
+            app:summary="Report search songs, something like KARAOKE or Instrumental." />
+
+
         <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
+            android:id="@+id/send_email"
+            app:key="emailme"
+            app:title="Send me an email"
+            app:summary="Report issues" />
+
         <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
+            android:id="@+id/paypalme"
+            app:key="paypal"
+            app:title="Send me a coffe" />
+
+        <SwitchPreferenceCompat
+            app:key="notifications"
+            android:enabled="false"
+
+            app:title="Smart Duplicate"
+            app:summary="If a song was recognize, two week ago, it will be deleted and re-add in the fisrt possition " />
+
         <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
-        <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
-        <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
-        <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
-        <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
-        <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
-        <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
-        <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
-        <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
-        <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
-        <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
-        <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
-        <Preference
-            android:title="Change Terminal"
-            android:selectable="true" />
+            android:enabled="false"
+            android:id="@+id/lastfm"
+            app:key="lastfm"
+            app:title="lastfm is not stable for now" />
+
+
+        <!--        <Preference-->
+        <!--            android:id="@+id/report_feedback"-->
+        <!--            app:key="report"-->
+        <!--            app:title="Send feedback"-->
+        <!--            app:summary="Report technical issues or suggest new features" />-->
 
 
     </PreferenceCategory>

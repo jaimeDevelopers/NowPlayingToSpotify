@@ -1,4 +1,4 @@
-package com.jaime.addtracksspotifynowplaying.ui.activities;
+package com.jaime.addtracksspotifynowplaying.ui.activities.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.jaime.addtracksspotifynowplaying.R;
+import com.jaime.addtracksspotifynowplaying.ui.activities.Music;
 
 public class ScreenSlidePagerAdapter extends FragmentStateAdapter {
 

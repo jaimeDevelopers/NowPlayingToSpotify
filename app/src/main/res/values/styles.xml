@@ -38,8 +38,10 @@
         <item name="colorOnSurface">@color/white_50</item>
         <item name="colorOnError">@color/black_900</item>
 
-
     </style>
 
+    <style name="buttonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+
+    </style>
 
 </resources>
