@@ -1,32 +1,22 @@
 package com.jaime.addtracksspotifynowplaying.ui.activities;
 
-import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.jaime.addtracksspotifynowplaying.MyValues;
 import com.jaime.addtracksspotifynowplaying.R;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Objects;
+import five.star.me.FiveStarMe;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -56,8 +46,8 @@ public class SettingsActivity extends AppCompatActivity {
         super.onPause();
     }
 
+
     public static class SettingsFragment extends PreferenceFragmentCompat {
-        private int STORAGE_PERMISSION_CODE = 1;
         public Context context;
 
 
@@ -162,6 +152,24 @@ public class SettingsActivity extends AppCompatActivity {
                         emailIntent.setPackage(null);
                         context.startActivity(emailIntent);
                     }
+                    return true;
+                }
+            });
+
+
+            Preference button_review = findPreference("review");
+            button_review.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+
+                    final String appPackageName = context.getPackageName(); // getPackageName() from Context or Activity object
+                    System.out.println(appPackageName);
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                    }
+
                     return true;
                 }
             });
@@ -282,4 +290,6 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     }
+
+
 }

@@ -17,10 +17,6 @@ import com.jaime.addtracksspotifynowplaying.R;
 import com.jaime.addtracksspotifynowplaying.db.database.Song;
 import com.jaime.addtracksspotifynowplaying.ui.activities.SongDetails;
 
-import java.util.List;
-
-import static java.lang.String.valueOf;
-
 public class PagingListAdapter extends PagedListAdapter<Song, PagingListAdapter.SongViewHolder> {
 
     private LayoutInflater mInflater;

@@ -6,14 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <uses-permission
-        android:name="android.permission.READ_LOGS"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:allowBackup="false"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -21,9 +16,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:theme="@style/AppTheme">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,20 +29,25 @@
 
         <activity
             android:name=".ui.activities.SongDetails"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
 
 
         <activity
             android:name=".ui.activities.LoginSpotify"
-            android:parentActivityName=".ui.activities.SettingsActivity" />
+            android:parentActivityName=".ui.activities.SettingsActivity"
+            android:screenOrientation="portrait" />
 
 
         <activity
             android:name=".ui.activities.SettingsActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
 
 
-        <activity android:name="com.spotify.sdk.android.auth.LoginActivity"></activity>
+        <activity
+            android:name="com.spotify.sdk.android.auth.LoginActivity"
+            android:screenOrientation="portrait" />
 
 
         <!--  <activity android:name="com.spotify.sdk.android.authentication.LoginActivity">
@@ -64,7 +64,6 @@
 
 
         <service
-
             android:name=".GetNowPlayingNotifications"
             android:label="@string/service_label"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">

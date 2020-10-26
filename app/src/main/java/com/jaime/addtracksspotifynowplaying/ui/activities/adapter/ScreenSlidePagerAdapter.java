@@ -12,8 +12,8 @@ import com.jaime.addtracksspotifynowplaying.ui.activities.Music;
 public class ScreenSlidePagerAdapter extends FragmentStateAdapter {
 
 
-    @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
+    //@StringRes
+    //private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
 
     public ScreenSlidePagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
@@ -24,13 +24,11 @@ public class ScreenSlidePagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         Fragment fragment = null;
-        switch (position) {
-            case 0:
-                fragment = Music.newInstance(position);
-                break;
-            //case 1:
-            //fragment = Music.newInstance(position);
+        if (position == 0) {
+            fragment = Music.newInstance();
+
         }
+        assert fragment != null;
         return fragment;
     }
 

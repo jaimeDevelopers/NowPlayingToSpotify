@@ -55,6 +55,7 @@ public class Spotify {
 
 
     public String info_search;
+    public StringBuilder info_search_builder;
 
 
     public Spotify(Context context, Application app) {
@@ -192,7 +193,6 @@ public class Spotify {
             }
             count -= 20;
             if (count <= 0) {
-                //System.out.println("La playlist " + Now_Playing_Playlist_name + " no ya está añadida");
                 break;
 
             } else {
@@ -300,6 +300,9 @@ public class Spotify {
                 try {
 
                     Song new_nowPlayingSong = mRepository.getItemnowPlayingSong(nowPlayingSong);
+
+                    info_search_builder = new StringBuilder().append("");
+
                     /*The song was not recognize yet*/
                     if (new_nowPlayingSong == null) {
 
@@ -321,22 +324,13 @@ public class Spotify {
                                 } else {
                                     mRepository.updateSong(nowPlayingSong, new_spotifySong.getStreamingSong(), getInfo_search());
                                 }
-
                             } else {
                                 mRepository.insert(new Song(nowPlayingSong, "Fail to search this song", date, getInfo_search()));
-
                             }
-
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
-
-                        //spotifyApi.getService().getPlaylist();
-                        //PlaylistSimple userPlaylists1 = spotifyApi.getService().getPlaylist()
-
-
                     }
 
 
@@ -357,7 +351,6 @@ public class Spotify {
 
         SharedPreferences pref = context.getSharedPreferences(MyValues.PREFERENCES, MODE_PRIVATE);
         String splitutil = pref.getString("split_util", null);         // getting String
-        info_search = null;
 
 
         if (splitutil != null) {
@@ -386,74 +379,6 @@ public class Spotify {
             }
 
 
-
-            /*
-
-            if (trackspager != null && trackspager.tracks.items.isEmpty()) {
-                song_name_split[0] = song_name_split[0].replaceAll("[^A-Za-z0-9]", "");
-                songsearched = song_name_split[0];
-                System.out.println("Eentro aqui? gili 2--> " + songsearched);
-
-                trackspager = searchSongSpotify(songsearched);
-                info_search = info_search + ", " + songsearched;
-
-
-            } else {
-                System.out.println("vvvvvvvv-2> " + songsearched);
-
-                return trackspager;
-            }
-
-            if (trackspager != null && trackspager.tracks.items.isEmpty()) {
-                song_name_split[1] = song_name_split[1].replaceAll("[^A-Za-z0-9]", "");
-                songsearched = song_name_split[0] + song_name_split[1];
-                System.out.println("Eentro aqui? gili 3--> " + songsearched);
-
-                trackspager = searchSongSpotify(songsearched);
-                info_search = info_search + ", " + songsearched;
-
-            } else {
-                System.out.println("vvvvvvvv-87878778> " + songsearched);
-
-                return trackspager;
-            }
-
-            if (trackspager != null && trackspager.tracks.items.isEmpty()) {
-                song_name_split = song_name_split[0].split(" ");
-
-                if (song_name_split.length <= 3) {
-                    songsearched = TextUtils.join(" ", song_name_split);
-                    System.out.println("Eentro aqui? gili 4--> " + songsearched);
-
-                    trackspager = searchSongSpotify(songsearched);
-                    info_search = info_search + ", " + songsearched;
-
-
-                } else {
-                    int i = 4;
-                    StringBuilder new_song = new StringBuilder();
-                    for (int j = 0; j <= i; j++) {
-                        new_song.append(song_name_split[j]);
-                    }
-                    while (trackspager != null && trackspager.tracks.items.isEmpty() || i < song_name_split.length) {
-                        trackspager = searchSongSpotify(new_song.toString());
-
-                        i++;
-                        if (i < song_name_split.length) {
-                            new_song.append(song_name_split[i]);
-                        }
-                    }
-                    songsearched = new_song.toString();
-                    System.out.println("Eentro aqui? gili 5--> " + songsearched);
-
-                    info_search = info_search + ", " + songsearched;
-
-                }
-            }
-
-
-
-             */
         } else {
             track_searched = unsupportedSearch(Init_songsearched);
         }
@@ -494,19 +419,16 @@ public class Spotify {
 
 
     private Track searchSongSpotify(String notification, String songname, int limit) {
-
-
         Map<String, Object> options = new HashMap<>();
         options.put(SpotifyService.OFFSET, 0);
         options.put(SpotifyService.LIMIT, limit);
 
         TracksPager trackspager = null;
         Track mSongSpotify = null;
+        int popularity;
 
         try {
             trackspager = spotifyApi.getService().searchTracks(songname, options);
-
-            //info_search = songname;
 
         } catch (RetrofitError e) {
             if (e.getResponse() != null && e.getResponse().getStatus() == 401) {
@@ -526,7 +448,6 @@ public class Spotify {
 
             int count = trackspager.tracks.total;
 
-
             if (count >= 200) {
                 count = 200;
             }
@@ -536,15 +457,14 @@ public class Spotify {
             outerloop:
             while (true) {
                 for (Track mTrackSearched : trackspager.tracks.items) {
-                    String misArtistas = "";
+                    StringBuilder misArtistas = new StringBuilder();
                     for (ArtistSimple artist : mTrackSearched.artists) {
-                        misArtistas = misArtistas + " " + artist.name;
+                        misArtistas.append(" ").append(artist.name);
                     }
-                    String searched = mTrackSearched.name + " " + misArtistas.trim();
+                    String searched = mTrackSearched.name + " " + misArtistas.toString().trim();
                     Double JaroWinklerDistance = distance.apply(searched, notification);
 
-                    int popularity = mTrackSearched.popularity;
-
+                    popularity = mTrackSearched.popularity;
 
                     if (JaroWinklerDistance >= maxJaroWinklerDistance) {
                         maxJaroWinklerDistance = JaroWinklerDistance;
@@ -554,10 +474,10 @@ public class Spotify {
                             mSongSpotify = mTrackSearched;
                             DecimalFormat numberFormat = new DecimalFormat("#.0000");
                             String Report = "*The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
-                            if (info_search == null) {
-                                info_search = Report;
+                            if (info_search_builder.length() == 0) {
+                                info_search_builder.append(Report);
                             } else {
-                                info_search = info_search + "\n\n" + Report;
+                                info_search_builder.append("\n\n").append(Report);
                             }
                             break outerloop;
                         } else if (popularity >= maxPopularity) {
@@ -565,18 +485,18 @@ public class Spotify {
                             mSongSpotify = mTrackSearched;
                             DecimalFormat numberFormat = new DecimalFormat("#.0000");
                             String Report = "*The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
-                            if (info_search == null) {
-                                info_search = Report;
+                            if (info_search_builder.length() == 0) {
+                                info_search_builder.append(Report);
                             } else {
-                                info_search = info_search + "\n\n" + Report;
+                                info_search_builder.append("\n\n").append(Report);
                             }
-                        } else {
+                        } else if (popularity > 20) {
                             DecimalFormat numberFormat = new DecimalFormat("#.0000");
                             String Report = "The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
-                            if (info_search == null) {
-                                info_search = Report;
+                            if (info_search_builder.length() == 0) {
+                                info_search_builder.append(Report);
                             } else {
-                                info_search = info_search + "\n\n" + Report;
+                                info_search_builder.append("\n\n").append(Report);
                             }
                         }
                     }
@@ -602,48 +522,10 @@ public class Spotify {
                     }
                 }
             }
+        }
 
-
-
-            /*
-
-            for (Track mTrackSearched : trackspager.tracks.items) {
-                String misArtistas = "";
-                for (ArtistSimple artist : mTrackSearched.artists) {
-                    misArtistas = misArtistas + " " + artist.name;
-                }
-                String searched = mTrackSearched.name + " " + misArtistas.trim();
-                Double JaroWinklerDistance = distance.apply(searched, notification);
-                int popularity = mTrackSearched.popularity;
-
-                //String Report = "The JaroWinklerDistance: " + JaroWinklerDistance + "\nStream: " + searched + "\nGoogle: " + notification;
-                //System.out.println(Report);
-
-
-                //String ee = "The JaroWinklerDistance: " + JaroWinklerDistance + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
-                //System.out.println("EL report--> " + ee);
-                if (JaroWinklerDistance >= maxJaroWinklerDistance) {
-                    maxJaroWinklerDistance = JaroWinklerDistance;
-
-                    if(popularity >= maxPopularity){
-                        maxPopularity = popularity;
-                        mSongSpotify = mTrackSearched;
-
-                        String Report = "The JaroWinklerDistance: " + JaroWinklerDistance + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
-                        if (info_search == null) {
-                            info_search = Report;
-                        } else {
-                            info_search = info_search + "\n\n" +Report;
-                        }
-                    }
-
-
-
-                }
-                //System.out.println("EL report para  distanceLongestCommom o --> " + distanceLongestCommom.apply(searched, notification));
-            }
-              */
-
+        if (info_search_builder.length() > 0) {
+            info_search = info_search_builder.toString();
 
         }
 
@@ -692,8 +574,7 @@ public class Spotify {
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putBoolean("SPOTIFY_ENABLED", true);
                         editor.apply();
-
-                        Toast.makeText(context, "Correct login on Spotify", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Login on Spotify OK", Toast.LENGTH_SHORT).show();
                     } catch (RetrofitError e) {
                         if (e.getResponse() != null && e.getResponse().getStatus() == 401) {
                             // Log.println(Log.INFO, "[JAIME-SPOTIFY]", "Actualizing token.");

@@ -302,11 +302,11 @@ public class LoginSpotify extends AppCompatActivity {
 
             if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-                if (playlist_name.getEditText().getText().toString().length() == 0) {
+                if (Objects.requireNonNull(playlist_name.getEditText()).getText().toString().length() == 0) {
                     String date = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
-                    String playlistName = pref.getString("playlistName", date + " Now Playing");         // getting String
-
-                    playlist_name.getEditText().setText(playlistName);
+                    StringBuilder Name = new StringBuilder();
+                    Name.append(date).append(" Now Playing");
+                    playlist_name.getEditText().setText(Name.toString());
                 }
                 update(null);
             }
@@ -319,8 +319,7 @@ public class LoginSpotify extends AppCompatActivity {
 
             SharedPreferences.Editor editor = this.pref.edit();
 
-
-            if (Objects.requireNonNull(playlist_name.getEditText().getText()).toString().length() == 0) {
+            if (Objects.requireNonNull(Objects.requireNonNull(playlist_name.getEditText()).getText()).toString().length() == 0) {
                 String date = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
                 String playlistName = pref.getString("playlistName", date + " Now Playing");         // getting String
                 playlist_name.getEditText().setText(playlistName);

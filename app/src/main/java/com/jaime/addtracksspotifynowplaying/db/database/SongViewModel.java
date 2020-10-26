@@ -1,7 +1,6 @@
 package com.jaime.addtracksspotifynowplaying.db.database;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -16,27 +15,20 @@ public class SongViewModel extends AndroidViewModel {
 
     private SongRepository mRepository;
 
-    private LiveData<List<Song>> mAllSongs;
-
     public LiveData<PagedList<Song>> mFewWords;
 
 
     public SongViewModel(Application application) {
         super(application);
         mRepository = new SongRepository(application);
-        //mAllSongs = mRepository.getAllSongs();
 
         DataSource.Factory<Integer, Song> fewWords = mRepository.getFewWords();
-
 
         mFewWords = new LivePagedListBuilder<>(
                 fewWords, /* page size */ 2).build();
 
     }
 
-    public LiveData<List<Song>> getAllSongs() {
-        return mAllSongs;
-    }
 
 
 

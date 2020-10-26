@@ -16,7 +16,6 @@ import java.util.List;
 public class SongRepository {
 
     private SongDao mSongDao;
-    private LiveData<List<Song>> mAllSongs;
     Song resultado;
     SongRoomDatabase db;
 
@@ -36,12 +35,6 @@ public class SongRepository {
 
         //songPaging = new LivePagedListBuilder<>(
         //        mSongDao.getAllPaging(), 50).build();
-    }
-
-    // Room executes all queries on a separate thread.
-    // Observed LiveData will notify the observer when the data has changed.
-    public LiveData<List<Song>> getAllSongs() {
-        return mAllSongs;
     }
 
     // public LiveData<PagedList<Song>> getallusingPaging() {

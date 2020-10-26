@@ -2,7 +2,6 @@ package com.jaime.addtracksspotifynowplaying;
 
 public final class MyValues {
     public static final String PREFERENCES = "accounts";
-    //public static final String PREFERENCES_NOTIFICATION = "notification";
 
     public static final String ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners";
     public static final String ACTION_NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";

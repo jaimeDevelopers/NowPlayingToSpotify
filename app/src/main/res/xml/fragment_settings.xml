@@ -58,6 +58,12 @@
             app:key="paypal"
             app:title="Send me a coffe" />
 
+        <Preference
+            android:id="@+id/review"
+            app:key="review"
+            app:title="Do you like?" />
+
+
         <SwitchPreferenceCompat
             app:key="notifications"
             android:enabled="false"
