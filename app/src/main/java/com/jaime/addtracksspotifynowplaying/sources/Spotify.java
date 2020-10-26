@@ -1,12 +1,10 @@
 package com.jaime.addtracksspotifynowplaying.sources;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,16 +13,7 @@ import com.jaime.addtracksspotifynowplaying.MyValues;
 import com.jaime.addtracksspotifynowplaying.db.database.Song;
 import com.jaime.addtracksspotifynowplaying.db.database.SongRepository;
 
-import org.apache.commons.text.similarity.CosineDistance;
-import org.apache.commons.text.similarity.CosineSimilarity;
-import org.apache.commons.text.similarity.FuzzyScore;
-import org.apache.commons.text.similarity.HammingDistance;
-import org.apache.commons.text.similarity.JaccardDistance;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
-import org.apache.commons.text.similarity.LevenshteinDetailedDistance;
-import org.apache.commons.text.similarity.LevenshteinDistance;
-import org.apache.commons.text.similarity.JaroWinklerSimilarity;
-import org.apache.commons.text.similarity.LongestCommonSubsequenceDistance;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -35,7 +24,6 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
-import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -142,7 +130,7 @@ public class Spotify {
                         }
 
 
-                        mRepository.insert(new Song("No detected yet by Google", pt.track.name, pt.added_at, "No searched yet by your music app"));
+                        mRepository.insert(new Song("No detected by Google", pt.track.name, pt.added_at, "No searched yet by your music app"));
                     }
                 }
 
@@ -305,7 +293,7 @@ public class Spotify {
     }
 
 
-    public void recognizedSong(String nowPlayingSong, String playlistName) {
+    public void recognizedSong(String nowPlayingSong) {
         new Thread() {
             public void run() {
 
@@ -315,7 +303,6 @@ public class Spotify {
                     /*The song was not recognize yet*/
                     if (new_nowPlayingSong == null) {
 
-                        /*TODO Don't request all playlits every time the phone recognize a song*/
                         //if (!playlistExist(playlistName)) {
                         //    startPlaylist(playlistName);
                         //}
@@ -534,15 +521,8 @@ public class Spotify {
             //System.out.println("HE ENCONTRADO ESTO   ---> en spotify --> " + track.name + " con esta búsqueda " + songname);
             JaroWinklerDistance distance = new JaroWinklerDistance();
 
-            Double maxJaroWinklerDistance = 0.65;
+            Double maxJaroWinklerDistance = 0.60;
             int maxPopularity = 10;
-
-            //CosineDistance cosine = new CosineDistance();
-            //Double maxDIstance = 0.;
-            //JaccardDistance jacar = new JaccardDistance();
-            //LongestCommonSubsequenceDistance longest = new LongestCommonSubsequenceDistance();
-            //LevenshteinDetailedDistance levendetails = new LevenshteinDetailedDistance();
-            //LevenshteinDistance leve = new LevenshteinDistance();
 
             int count = trackspager.tracks.total;
 
@@ -553,6 +533,7 @@ public class Spotify {
             int offset = 0;
 
 
+            outerloop:
             while (true) {
                 for (Track mTrackSearched : trackspager.tracks.items) {
                     String misArtistas = "";
@@ -562,25 +543,35 @@ public class Spotify {
                     String searched = mTrackSearched.name + " " + misArtistas.trim();
                     Double JaroWinklerDistance = distance.apply(searched, notification);
 
-
                     int popularity = mTrackSearched.popularity;
 
-                    //String Report = "The JaroWinklerDistance: " + JaroWinklerDistance + "\nStream: " + searched + "\nGoogle: " + notification;
-                    //System.out.println(Report);
 
-
-                    String ee = "The JaroWinklerDistance: " + JaroWinklerDistance + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
                     if (JaroWinklerDistance >= maxJaroWinklerDistance) {
                         maxJaroWinklerDistance = JaroWinklerDistance;
 
-                        if (popularity >= maxPopularity) {
 
+                        if (JaroWinklerDistance >= 0.98) {
+                            mSongSpotify = mTrackSearched;
+                            DecimalFormat numberFormat = new DecimalFormat("#.0000");
+                            String Report = "*The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
+                            if (info_search == null) {
+                                info_search = Report;
+                            } else {
+                                info_search = info_search + "\n\n" + Report;
+                            }
+                            break outerloop;
+                        } else if (popularity >= maxPopularity) {
                             maxPopularity = popularity;
                             mSongSpotify = mTrackSearched;
-
                             DecimalFormat numberFormat = new DecimalFormat("#.0000");
-
-
+                            String Report = "*The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
+                            if (info_search == null) {
+                                info_search = Report;
+                            } else {
+                                info_search = info_search + "\n\n" + Report;
+                            }
+                        } else {
+                            DecimalFormat numberFormat = new DecimalFormat("#.0000");
                             String Report = "The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
                             if (info_search == null) {
                                 info_search = Report;
@@ -588,11 +579,9 @@ public class Spotify {
                                 info_search = info_search + "\n\n" + Report;
                             }
                         }
-
-
                     }
-                    //System.out.println("EL report para  distanceLongestCommom o --> " + distanceLongestCommom.apply(searched, notification));
                 }
+
                 count -= 50;
                 if (count <= 0) {
                     //System.out.println("La playlist " + Now_Playing_Playlist_name + " no ya está añadida");
@@ -613,7 +602,6 @@ public class Spotify {
                     }
                 }
             }
-
 
 
 

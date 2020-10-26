@@ -35,6 +35,7 @@ import com.jaime.addtracksspotifynowplaying.R;
 import com.jaime.addtracksspotifynowplaying.db.database.Song;
 import com.jaime.addtracksspotifynowplaying.db.database.SongListAdapter;
 import com.jaime.addtracksspotifynowplaying.db.database.SongViewModel;
+import com.jaime.addtracksspotifynowplaying.roomwithpaging.PagingListAdapter;
 import com.jaime.addtracksspotifynowplaying.sources.Spotify;
 
 
@@ -47,6 +48,8 @@ import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import static android.content.ContentValues.TAG;
 
 
 public class Music extends Fragment {
@@ -84,7 +87,7 @@ public class Music extends Fragment {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
 
-        createNotificationChannel();
+        // createNotificationChannel();
 
 
         FloatingActionButton fab = root.findViewById(R.id.fab);
@@ -180,13 +183,12 @@ public class Music extends Fragment {
         // Initialize the RecyclerView.
         mRecyclerView = root.findViewById(R.id.my_recycler_view);
 
-        final SongListAdapter adapter = new SongListAdapter(getContext());
-        mRecyclerView.setAdapter(adapter);
+        //final SongListAdapter adapter = new SongListAdapter(getContext());
+        //mRecyclerView.setAdapter(adapter);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
-        //layoutManager.setStackFromEnd(true);
+        //LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setReverseLayout(true);
-
         layoutManager.setStackFromEnd(true);
 
         mRecyclerView.setLayoutManager(layoutManager);
@@ -198,10 +200,24 @@ public class Music extends Fragment {
         // Add an observer on the LiveData returned by getAlphabetizedSongs.
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.
-        mSongViewModel.getAllSongs().observe(getViewLifecycleOwner(), Songs -> {
-            // Update the cached copy of the Songs in the adapter.
-            adapter.setSongs(Songs);
+
+
+        final PagingListAdapter adapterPaging = new PagingListAdapter(getContext());
+        //mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mSongViewModel.mFewWords.observe(getViewLifecycleOwner(), pagedList -> {
+            Log.e(TAG, "Paged List Changed. New Size is: " + pagedList.size());
+            adapterPaging.submitList(pagedList);
         });
+
+        mRecyclerView.setAdapter(adapterPaging);
+
+
+        //mSongViewModel.getAllSongs().observe(getViewLifecycleOwner(), Songs -> {
+        // Update the cached copy of the Songs in the adapter.
+        //   adapter.setSongs(Songs);
+        // });
+
 
         //mSongViewModel.deleteall();
 //

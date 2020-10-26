@@ -17,6 +17,7 @@ import java.util.List;
 
 import static java.lang.String.valueOf;
 
+//public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongViewHolder> {
 public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongViewHolder> {
 
     private Context mContext;

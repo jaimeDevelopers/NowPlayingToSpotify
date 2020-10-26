@@ -5,6 +5,7 @@ import android.content.Context;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
@@ -17,16 +18,19 @@ public class SongViewModel extends AndroidViewModel {
 
     private LiveData<List<Song>> mAllSongs;
 
-    public final LiveData<PagedList<Song>> songPaging;
+    public LiveData<PagedList<Song>> mFewWords;
 
 
     public SongViewModel(Application application) {
         super(application);
         mRepository = new SongRepository(application);
-        mAllSongs = mRepository.getAllSongs();
+        //mAllSongs = mRepository.getAllSongs();
+
+        DataSource.Factory<Integer, Song> fewWords = mRepository.getFewWords();
 
 
-        songPaging = mRepository.getallusingPaging();
+        mFewWords = new LivePagedListBuilder<>(
+                fewWords, /* page size */ 2).build();
 
     }
 
@@ -34,9 +38,6 @@ public class SongViewModel extends AndroidViewModel {
         return mAllSongs;
     }
 
-    public LiveData<PagedList<Song>> getAllSongsPaging() {
-        return songPaging;
-    }
 
 
     public void insert(Song Song) {

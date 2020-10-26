@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
@@ -19,7 +20,8 @@ public class SongRepository {
     Song resultado;
     SongRoomDatabase db;
 
-    public final LiveData<PagedList<Song>> songPaging;
+    //public final LiveData<PagedList<Song>> songPaging;
+    private final DataSource.Factory<Integer, Song> mFewWords;
 
     // Note that in order to unit test the SongRepository, you have to remove the Application
     // dependency. This adds complexity and much more code, and this sample is not about testing.
@@ -28,10 +30,12 @@ public class SongRepository {
     public SongRepository(Application application) {
         db = SongRoomDatabase.getDatabase(application);
         mSongDao = db.SongDao();
-        mAllSongs = mSongDao.getAlphabetizedSongs();
+        //mAllSongs = mSongDao.getAlphabetizedSongs();
 
-        songPaging = new LivePagedListBuilder<>(
-                mSongDao.getAllPaging(), 50).build();
+        mFewWords = mSongDao.getFewWords();
+
+        //songPaging = new LivePagedListBuilder<>(
+        //        mSongDao.getAllPaging(), 50).build();
     }
 
     // Room executes all queries on a separate thread.
@@ -40,8 +44,12 @@ public class SongRepository {
         return mAllSongs;
     }
 
-    public LiveData<PagedList<Song>> getallusingPaging() {
-        return songPaging;
+    // public LiveData<PagedList<Song>> getallusingPaging() {
+    //    return songPaging;
+    //}
+
+    public DataSource.Factory<Integer, Song> getFewWords() {
+        return mFewWords;
     }
 
 

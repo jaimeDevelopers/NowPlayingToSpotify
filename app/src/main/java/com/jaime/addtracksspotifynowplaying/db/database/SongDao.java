@@ -42,7 +42,6 @@ public interface SongDao {
 
 
     @Query("SELECT * from Song_table")
-    DataSource.Factory<Integer, Song> getAllPaging();
-
+    DataSource.Factory<Integer, Song> getFewWords();
 
 }

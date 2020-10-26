@@ -139,7 +139,7 @@ public class GetNowPlayingNotifications extends NotificationListenerService {
                     }
 
 
-                    Source.recognizedSong(title, playlistName);
+                    Source.recognizedSong(title);
 
                     //Source.searchsong(title);
                     //Source.Create_a_playlist();
