@@ -73,7 +73,7 @@ public class Spotify {
 
         if (spotify_enabled) {
             String date = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
-            String playlistName = pref.getString("playlistName", date + " Now playing");         // getting String
+            String playlistName = pref.getString("playlistName", date + " Now Playing");         // getting String
 
             new Thread() {
                 public void run() {

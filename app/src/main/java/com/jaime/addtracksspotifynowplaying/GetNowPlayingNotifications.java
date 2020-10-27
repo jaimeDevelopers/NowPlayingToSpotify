@@ -29,11 +29,10 @@ public class GetNowPlayingNotifications extends NotificationListenerService {
     private SharedPreferences pref;
     String PackageName;
 
-    public static Spotify Source;
+    public Spotify Source;
     //private SongViewModel mSongViewModel;
 
     public Context context;
-    public Song prue;
 
 
     @Override
@@ -126,7 +125,7 @@ public class GetNowPlayingNotifications extends NotificationListenerService {
                 this.pref = getApplicationContext().getSharedPreferences(MyValues.PREFERENCES, MODE_PRIVATE);
                 String lastsong = pref.getString("last_song", null);         // getting String
                 String date = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
-                String playlistName = pref.getString("playlistName", date + " Now playing");         // getting String
+                //String playlistName = pref.getString("playlistName", date + " Now playing");         // getting String
 
                 if (!title.equalsIgnoreCase(lastsong)) {
                     SharedPreferences.Editor editor = this.pref.edit();

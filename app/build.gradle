@@ -12,8 +12,8 @@ android {
         applicationId "com.jaime.addtracksspotifynowplaying"
         minSdkVersion 27
         targetSdkVersion 30
-        versionCode 26
-        versionName '4.0.0'
+        versionCode 29
+        versionName '4.0.2'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,8 +51,6 @@ dependencies {
     implementation "androidx.paging:paging-runtime:$paging_version"
 
     implementation "org.apache.commons:commons-text:1.7"
-
-    implementation 'com.github.numerative:Five-Star-Me:2.0.0'
 
 
 

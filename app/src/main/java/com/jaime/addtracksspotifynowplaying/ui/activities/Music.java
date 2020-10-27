@@ -1,9 +1,13 @@
 package com.jaime.addtracksspotifynowplaying.ui.activities;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.StateSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +58,7 @@ public class Music extends Fragment {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
         context = getContext();
+        NotificationPermission notificationPermission = new NotificationPermission(context);
 
 
         FloatingActionButton fab = root.findViewById(R.id.fab);
@@ -69,8 +74,8 @@ public class Music extends Fragment {
             SharedPreferences pref = requireContext().getSharedPreferences(MyValues.PREFERENCES, Context.MODE_PRIVATE);
             boolean spotify_enabled = pref.getBoolean("SPOTIFY_ENABLED", false);
 
-            if (spotify_enabled) {
 
+            if (spotify_enabled || notificationPermission.isNotificationServiceEnabled(context)) {
 
                 mSongViewModel.deleteall();
                 Spotify testSpotify = new Spotify(requireContext(), requireActivity().getApplication());
@@ -80,11 +85,9 @@ public class Music extends Fragment {
                 //AlertDialog enableNotificationListenerAlertDialog = buildNotificationServiceAlertDialog();
                 //enableNotificationListenerAlertDialog.show();
 
-
             } else {
-                Toast.makeText(getContext(), "Please, first enable spotify", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Please, first enable spotify and notification listener", Toast.LENGTH_SHORT).show();
             }
-
 
             // create
 
@@ -332,7 +335,23 @@ public class Music extends Fragment {
     }
 
 
-
+    private boolean isNotificationServiceEnabled() {
+        String pkgName = context.getPackageName();
+        final String flat = Settings.Secure.getString(context.getContentResolver(),
+                MyValues.ENABLED_NOTIFICATION_LISTENERS);
+        if (!TextUtils.isEmpty(flat)) {
+            final String[] names = flat.split(":");
+            for (String name : names) {
+                final ComponentName cn = ComponentName.unflattenFromString(name);
+                if (cn != null) {
+                    if (TextUtils.equals(pkgName, cn.getPackageName())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
 
 }

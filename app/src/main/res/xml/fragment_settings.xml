@@ -1,79 +1,81 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <Preference
-        android:selectable="false"
         android:enabled="true"
         android:key="info"
-        android:title="INFO:"
-        android:summary="1º Connect to Spotify.\n2º Enable notification listener.\n*Without Internet the app does not work" />
+        android:selectable="false"
+        android:summary="1º Connect to Spotify.\n2º Enable notification listener.\n3ºSynchronize the playlist\n*Without Internet the app does not work\n*Please, report if a song fails"
+        android:title="INFO:" />
 
 
     <PreferenceCategory android:title="Connect to your music service">
 
         <Preference
             android:id="@+id/spotify"
-            app:key="spotify"
             android:title="Connect to spotify"
+            app:key="spotify"
             app:summary="Connect this app with spotify" />
 
         <Preference
             android:id="@+id/soundcloud"
             android:enabled="false"
-            app:key="soundcloud"
             android:title="Connect to soundcloud"
+            app:key="soundcloud"
             app:summary="Connect this app with soundcloud *not stable*" />
 
     </PreferenceCategory>
 
 
-    <PreferenceCategory android:title="Enable notification listener">
+    <PreferenceCategory android:title="Enable notification listener:">
 
         <Preference
             android:id="@+id/enablenotification"
-            app:key="enable"
             android:title="Enable notification listener"
-            app:summary="In order to get the song title and add it to the playlist" />
+            app:key="enable"
+            app:summary="In order to get the song title and add to the playlist" />
     </PreferenceCategory>
 
 
-    <PreferenceCategory android:title="Other">
+    <PreferenceCategory android:title="Others:">
 
         <Preference
             android:id="@+id/song_bounty"
             app:key="song_bounty"
-            app:title="Report songs fails"
-            app:summary="Report search songs, something like KARAOKE or Instrumental." />
+            app:summary="Report search songs, something like KARAOKE or Instrumental."
+            app:title="Report songs fails" />
+
+        <Preference
+            android:id="@+id/paypalme"
+            app:key="paypal"
+            app:summary="Thank you! I appreciate it."
+            app:title="Buy me a coffee (or a Gulden Draak Beer)" />
 
 
         <Preference
             android:id="@+id/send_email"
             app:key="emailme"
-            app:title="Send me an email"
-            app:summary="Report issues" />
+            app:summary="Report issues"
+            app:title="Send me an email" />
 
-        <Preference
-            android:id="@+id/paypalme"
-            app:key="paypal"
-            app:title="Send me a coffe" />
 
         <Preference
             android:id="@+id/review"
             app:key="review"
+            app:summary="This app does not collect any data. It uses Kaaes API and Spotify API"
             app:title="Do you like?" />
 
 
         <SwitchPreferenceCompat
-            app:key="notifications"
             android:enabled="false"
-
-            app:title="Smart Duplicate"
-            app:summary="If a song was recognize, two week ago, it will be deleted and re-add in the fisrt possition " />
+            app:key="notifications"
+            app:summary="If a song was recognize, two week ago, it will be deleted and re-add in the fisrt possition "
+            app:title="Smart Duplicate" />
 
         <Preference
-            android:enabled="false"
             android:id="@+id/lastfm"
+            android:enabled="false"
             app:key="lastfm"
             app:title="lastfm is not stable for now" />
 

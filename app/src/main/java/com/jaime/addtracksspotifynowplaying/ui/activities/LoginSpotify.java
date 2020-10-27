@@ -9,30 +9,19 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.jaime.addtracksspotifynowplaying.MyValues;
 import com.jaime.addtracksspotifynowplaying.R;
-
-
 import com.jaime.addtracksspotifynowplaying.sources.Spotify;
-//import com.spotify.sdk.android.authentication.AuthenticationClient;
-//import com.spotify.sdk.android.authentication.AuthenticationRequest;
-//import com.spotify.sdk.android.authentication.AuthenticationResponse;
-
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
-//import com.spotify.sdk.android.authentication.AuthenticationClient;
-//import com.spotify.sdk.android.authentication.AuthenticationRequest;
-//import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -49,7 +38,12 @@ import java.util.Objects;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import static android.view.KeyEvent.KEYCODE_BACK;
+//import com.spotify.sdk.android.authentication.AuthenticationClient;
+//import com.spotify.sdk.android.authentication.AuthenticationRequest;
+//import com.spotify.sdk.android.authentication.AuthenticationResponse;
+//import com.spotify.sdk.android.authentication.AuthenticationClient;
+//import com.spotify.sdk.android.authentication.AuthenticationRequest;
+//import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 
 public class LoginSpotify extends AppCompatActivity {
@@ -101,7 +95,6 @@ public class LoginSpotify extends AppCompatActivity {
                 //***Do what you want with the click here***
             }
         });
-
 
         //runLogin();
 
@@ -213,11 +206,18 @@ public class LoginSpotify extends AppCompatActivity {
                             editor.apply();
 
 
-                            Spotify testSpotify = new Spotify(getApplicationContext(), getApplication());
+                            try {
+                                Spotify testSpotify = new Spotify(getApplicationContext(), getApplication());
+                                //Reset playlist playlist
+                                testSpotify.initPlaylist();
+
+                                Toast.makeText(context, "Now, go to Notification listener and enabled it. Then synchronize the playlist" + response.getError(), Toast.LENGTH_LONG).show();
 
 
-                            //Reset playlist playlist
-                            testSpotify.initPlaylist();
+                            } catch (Exception e) {
+                                Toast.makeText(context, "Something goes wrokng " + response.getError(), Toast.LENGTH_SHORT).show();
+
+                            }
 
 
                         } catch (Exception e) {

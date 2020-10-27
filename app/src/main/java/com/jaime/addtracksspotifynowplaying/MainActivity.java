@@ -20,9 +20,6 @@ import com.jaime.addtracksspotifynowplaying.ui.activities.NotificationPermission
 import com.jaime.addtracksspotifynowplaying.ui.activities.SettingsActivity;
 import com.jaime.addtracksspotifynowplaying.ui.activities.adapter.ScreenSlidePagerAdapter;
 
-import five.star.me.FiveStarMe;
-
-
 public class MainActivity extends AppCompatActivity {
 
 
@@ -56,18 +53,6 @@ public class MainActivity extends AppCompatActivity {
         //System.out.println("El resultado esssssssss " + Build.VERSION.SDK_INT);
         //System.out.println("El resultado es " + Build.VERSION.SDK_INT);
 
-        try {
-            FiveStarMe.with(getApplicationContext())
-                    .setInstallDays(10) // default 10, 0 means install day.
-                    .setLaunchTimes(10) // default 10
-                    .setDebug(true) // default false
-                    .monitor();
-
-            // Show a dialog if meets conditions
-            FiveStarMe.showRateDialogIfMeetsConditions(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         NotificationPermission notificationPermission = new NotificationPermission(getApplicationContext());
 

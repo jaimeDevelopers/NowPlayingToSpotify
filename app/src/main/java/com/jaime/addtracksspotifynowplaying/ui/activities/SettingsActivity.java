@@ -16,8 +16,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.jaime.addtracksspotifynowplaying.MyValues;
 import com.jaime.addtracksspotifynowplaying.R;
 
-import five.star.me.FiveStarMe;
-
 public class SettingsActivity extends AppCompatActivity {
 
 
