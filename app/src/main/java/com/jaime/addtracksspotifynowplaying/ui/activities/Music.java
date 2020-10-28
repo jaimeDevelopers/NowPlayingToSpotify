@@ -75,7 +75,7 @@ public class Music extends Fragment {
             boolean spotify_enabled = pref.getBoolean("SPOTIFY_ENABLED", false);
 
 
-            if (spotify_enabled || notificationPermission.isNotificationServiceEnabled(context)) {
+            if (spotify_enabled && notificationPermission.isNotificationServiceEnabled(context)) {
 
                 mSongViewModel.deleteall();
                 Spotify testSpotify = new Spotify(requireContext(), requireActivity().getApplication());
