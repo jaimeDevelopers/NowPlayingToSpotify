@@ -58,9 +58,7 @@ public class GetNowPlayingNotifications extends NotificationListenerService {
         language.put("fr", " par ");
         language.put("it", " di ");
         language.put("nl", " van ");
-        language.put("pl", " - ");
         language.put("pt", " de ");
-        language.put("ru", " , ");
 
         editor.putString("split_util", language.get(Locale.getDefault().getLanguage()));  // Saving string
         editor.apply(); // commit changes

@@ -125,7 +125,6 @@ public class Spotify {
                 if (tracks != null) {
                     for (PlaylistTrack pt : tracks.items) {
 
-
                         if (pt.added_at == null) {
                             pt.added_at = "";
                         }
@@ -316,13 +315,16 @@ public class Spotify {
 
                             String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
                             if (track_searched != null) {
-                                Song new_spotifySong = mRepository.getItemstreamingSong(track_searched.name);
 
                                 StringBuilder misArtistas = new StringBuilder().append(" by:");
                                 for (ArtistSimple artist : track_searched.artists) {
                                     misArtistas.append(" ").append(artist.name);
                                 }
 
+
+                                String puede = track_searched.name + misArtistas.toString();
+
+                                Song new_spotifySong = mRepository.getItemstreamingSong(puede);
 
 
                                 /*now playing was not detected yet*/
@@ -334,7 +336,9 @@ public class Spotify {
                                     mRepository.insert(new Song(nowPlayingSong, track_searched.name + misArtistas.toString(), date, getInfo_search()));
 
                                 } else {
-                                    mRepository.updateSong(nowPlayingSong, new_spotifySong.getStreamingName() + misArtistas.toString(), getInfo_search());
+
+
+                                    mRepository.updateSong(nowPlayingSong, new_spotifySong.getStreamingName(), getInfo_search());
                                 }
 
 
@@ -406,9 +410,9 @@ public class Spotify {
         String process_song;
 
         process_song = Notification.replaceAll("\\p{P}", " ");
-        process_song = process_song.replaceAll("feat", " ");
-        process_song = process_song.replaceAll("ft", " ");
-        process_song = process_song.replaceAll("remix", " ");
+        process_song = process_song.replaceAll("(?i)feat", " ");
+        process_song = process_song.replaceAll("(?i)ft", " ");
+        process_song = process_song.replaceAll("(?i)remix", " ");
         process_song = process_song.replaceAll("  +", " ");
 
         track_searched = searchSongSpotify(process_song, process_song, 10);
@@ -442,7 +446,7 @@ public class Spotify {
         TracksPager trackspager = null;
         Track mSongSpotify = null;
         int popularity;
-        String Report = "\n-----My search: " + songname + "-----------------------\n";
+        String Report = "\n-----My search: " + songname + "-----------------------";
         info_search_builder.append(Report);
 
         DecimalFormat numberFormat = new DecimalFormat("#.0000");
