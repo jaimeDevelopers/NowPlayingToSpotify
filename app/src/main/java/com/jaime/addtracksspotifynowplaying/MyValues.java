@@ -3,6 +3,7 @@ package com.jaime.addtracksspotifynowplaying;
 public final class MyValues {
     public static final String PREFERENCES = "accounts";
 
+
     public static final String ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners";
     public static final String ACTION_NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
 
@@ -15,5 +16,19 @@ public final class MyValues {
     public static final String SPOTIFY_CLIENT_ID = "eca6739ed51f4e10b3b3d6adc865f8bb";
     public static final String SPOTIFY_REDIRECT_URI = "testschema://callback";
     public static int SPOTIFY_REQUEST_CODE = 1337;
+
+
+    public static final String TABLE_NAME = "Song_Table";
+
+    public static final String ID_TABLE = "id";
+    public static final String STREAMING_NAME = "Streaming_Name";
+    public static final String STREAMING_ARTIST = "Streaming_Artist";
+
+    public static final String NOW_PLAYING_SONG = "Now_Playing_Song";
+
+
+    public static final String DATE = "Date";
+    public static final String INFO_SEARCH = "Info_Search";
+
 
 }

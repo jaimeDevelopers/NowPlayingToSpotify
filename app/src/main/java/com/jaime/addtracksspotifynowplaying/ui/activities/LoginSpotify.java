@@ -132,9 +132,13 @@ public class LoginSpotify extends AppCompatActivity {
         // builder.setScopes(new String[]{"user-read-private", "streaming", "user-read-email", "user-follow-read",
         //        "playlist-read-private", "playlist-read-collaborative", "user-library-read", "user-library-modify",
         //        "playlist-modify-public", "playlist-modify-private", "user-follow-modify"});
-        AuthorizationRequest request = builder.build();
-        AuthorizationClient.openLoginActivity(this, MyValues.SPOTIFY_REQUEST_CODE, request);
 
+        try {
+            AuthorizationRequest request = builder.build();
+            AuthorizationClient.openLoginActivity(this, MyValues.SPOTIFY_REQUEST_CODE, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -321,8 +325,9 @@ public class LoginSpotify extends AppCompatActivity {
 
             if (Objects.requireNonNull(Objects.requireNonNull(playlist_name.getEditText()).getText()).toString().length() == 0) {
                 String date = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
-                String playlistName = pref.getString("playlistName", date + " Now Playing");         // getting String
-                playlist_name.getEditText().setText(playlistName);
+                StringBuilder Name = new StringBuilder();
+                Name.append(date).append(" Now Playing");         // getting String
+                playlist_name.getEditText().setText(Name.toString());
             }
 
             editor.putString("playlistName", playlist_name.getEditText().getText().toString());  // Saving string

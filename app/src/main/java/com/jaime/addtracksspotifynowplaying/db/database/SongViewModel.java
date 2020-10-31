@@ -25,7 +25,7 @@ public class SongViewModel extends AndroidViewModel {
         DataSource.Factory<Integer, Song> fewWords = mRepository.getFewWords();
 
         mFewWords = new LivePagedListBuilder<>(
-                fewWords, /* page size */ 2).build();
+                fewWords, /* page size */ 1).build();
 
     }
 

@@ -306,11 +306,6 @@ public class Spotify {
                     /*The song was not recognize yet*/
                     if (new_nowPlayingSong == null) {
 
-                        //if (!playlistExist(playlistName)) {
-                        //    startPlaylist(playlistName);
-                        //}
-
-
                         try {
                             Track track_searched = searchSong(nowPlayingSong);
                             String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
@@ -321,9 +316,15 @@ public class Spotify {
                                 if (new_spotifySong == null) {
                                     addSongToSpotify(track_searched);
                                     mRepository.insert(new Song(nowPlayingSong, track_searched.name, date, getInfo_search()));
+                                } else if (!new_spotifySong.getNowPlayingSong().equals("Not detected")) {
+                                    addSongToSpotify(track_searched);
+                                    mRepository.insert(new Song(nowPlayingSong, track_searched.name, date, getInfo_search()));
+
                                 } else {
-                                    mRepository.updateSong(nowPlayingSong, new_spotifySong.getStreamingSong(), getInfo_search());
+                                    mRepository.updateSong(nowPlayingSong, new_spotifySong.getStreamingName(), getInfo_search());
                                 }
+
+
                             } else {
                                 mRepository.insert(new Song(nowPlayingSong, "Fail to search this song", date, getInfo_search()));
                             }
@@ -419,16 +420,20 @@ public class Spotify {
 
 
     private Track searchSongSpotify(String notification, String songname, int limit) {
-        System.out.println("N " + notification);
-        System.out.println("S " + songname);
 
         Map<String, Object> options = new HashMap<>();
         options.put(SpotifyService.OFFSET, 0);
         options.put(SpotifyService.LIMIT, limit);
 
+        Double JaroWinklerDistance;
         TracksPager trackspager = null;
         Track mSongSpotify = null;
         int popularity;
+        String Report = "----------------------------";
+        info_search_builder.append(Report);
+
+        DecimalFormat numberFormat = new DecimalFormat("#.0000");
+        StringBuilder misArtistas;
 
         try {
             trackspager = spotifyApi.getService().searchTracks(songname, options);
@@ -459,12 +464,12 @@ public class Spotify {
 
             while (true) {
                 for (Track mTrackSearched : trackspager.tracks.items) {
-                    StringBuilder misArtistas = new StringBuilder();
+                    misArtistas = new StringBuilder();
                     for (ArtistSimple artist : mTrackSearched.artists) {
                         misArtistas.append(" ").append(artist.name);
                     }
                     String searched = mTrackSearched.name + " " + misArtistas.toString().trim();
-                    Double JaroWinklerDistance = distance.apply(searched, notification);
+                    JaroWinklerDistance = distance.apply(searched, notification);
 
                     popularity = mTrackSearched.popularity;
 
@@ -475,13 +480,16 @@ public class Spotify {
                         if (JaroWinklerDistance >= 0.98) {
                             perfect_mode = true;
 
-                            if (popularity >= maxPopularity) {
+                            if (popularity >= maxPopularity || mSongSpotify == null) {
                                 maxPopularity = popularity;
                                 mSongSpotify = mTrackSearched;
-                            }
 
-                            DecimalFormat numberFormat = new DecimalFormat("#.0000");
-                            String Report = "*The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
+                                Report = "*The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
+
+                            } else if (popularity > 20) {
+                                Report = "The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
+
+                            }
 
                             if (info_search_builder.length() == 0) {
                                 info_search_builder.append(Report);
@@ -494,16 +502,14 @@ public class Spotify {
                         } else if (popularity >= maxPopularity && !perfect_mode) {
                             maxPopularity = popularity;
                             mSongSpotify = mTrackSearched;
-                            DecimalFormat numberFormat = new DecimalFormat("#.0000");
-                            String Report = "*The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
+                            Report = "*The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
                             if (info_search_builder.length() == 0) {
                                 info_search_builder.append(Report);
                             } else {
                                 info_search_builder.append("\n\n").append(Report);
                             }
                         } else if (popularity > 20) {
-                            DecimalFormat numberFormat = new DecimalFormat("#.0000");
-                            String Report = "The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
+                            Report = "The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
                             if (info_search_builder.length() == 0) {
                                 info_search_builder.append(Report);
                             } else {

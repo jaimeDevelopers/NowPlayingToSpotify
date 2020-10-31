@@ -49,7 +49,7 @@ public class PagingListAdapter extends PagedListAdapter<Song, PagingListAdapter.
 
         void bindTo(Song song) {
             this.SongItemTitle.setText(song.getNowPlayingSong());
-            this.SongItemSubtitle.setText(song.getStreamingSong());
+            this.SongItemSubtitle.setText(song.getStreamingName());
 
             //SongItemTitle.setText(valueOf(current.getNowPlayingSong()));
             //holder.SongItemSubtitle.setText(current.getStreamingSong());
@@ -77,7 +77,7 @@ public class PagingListAdapter extends PagedListAdapter<Song, PagingListAdapter.
 
                 assert currentSong != null;
                 detailIntent.putExtra("nowPlayingSong", currentSong.getNowPlayingSong());
-                detailIntent.putExtra("streamingSong", currentSong.getStreamingSong());
+                detailIntent.putExtra("streamingSong", currentSong.getStreamingName());
                 detailIntent.putExtra("date", currentSong.getDate());
                 detailIntent.putExtra("infoSearch", currentSong.getInfoSearch());
 
