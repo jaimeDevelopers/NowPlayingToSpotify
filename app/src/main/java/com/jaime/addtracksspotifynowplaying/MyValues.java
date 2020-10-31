@@ -18,17 +18,15 @@ public final class MyValues {
     public static int SPOTIFY_REQUEST_CODE = 1337;
 
 
-    public static final String TABLE_NAME = "Song_Table";
+    public static final String TABLE_NAME = "Song_table";
 
     public static final String ID_TABLE = "id";
-    public static final String STREAMING_NAME = "Streaming_Name";
-    public static final String STREAMING_ARTIST = "Streaming_Artist";
-
-    public static final String NOW_PLAYING_SONG = "Now_Playing_Song";
+    public static final String STREAMING_NAME = "streamingSong";
+    public static final String NOW_PLAYING_SONG = "nowPlayingSong";
 
 
-    public static final String DATE = "Date";
-    public static final String INFO_SEARCH = "Info_Search";
+    public static final String DATE = "date";
+    public static final String INFO_SEARCH = "infoSearch";
 
 
 }

@@ -28,20 +28,21 @@ public interface SongDao {
     LiveData<List<Song>> getAlphabetizedSongs();
 
 
-    @Query("UPDATE Song_table SET Streaming_Name=:nowPlayingSong, Info_Search=:infoSearch WHERE Streaming_Name=:streamingSong")
+    @Query("UPDATE Song_table SET nowPlayingSong=:nowPlayingSong, infoSearch=:infoSearch WHERE streamingSong=:streamingSong")
     void updateSong(String nowPlayingSong, String streamingSong, String infoSearch);
 
     @Query("SELECT * FROM Song_table WHERE id LIKE :itemId LIMIT 1")
     Song getItemById(int itemId);
 
-    @Query("SELECT * FROM Song_table WHERE Now_Playing_Song LIKE :nowPlayingSong LIMIT 1")
+    @Query("SELECT * FROM Song_table WHERE nowPlayingSong LIKE :nowPlayingSong LIMIT 1")
     Song getItemnowPlayingSong(String nowPlayingSong);
 
-    @Query("SELECT * FROM Song_table WHERE Streaming_Name LIKE :streamingSong LIMIT 1")
+    @Query("SELECT * FROM Song_table WHERE streamingSong LIKE :streamingSong LIMIT 1")
     Song getItemstreamingSong(String streamingSong);
 
 
     @Query("SELECT * from Song_table")
-    DataSource.Factory<Integer, Song> getFewWords();
+    DataSource.Factory<Integer, Song> getAllPaging();
+
 
 }

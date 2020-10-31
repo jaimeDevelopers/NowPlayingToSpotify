@@ -130,8 +130,12 @@ public class Spotify {
                             pt.added_at = "";
                         }
 
+                        StringBuilder misArtistas = new StringBuilder().append(" by:");
+                        for (ArtistSimple artist : pt.track.artists) {
+                            misArtistas.append(" ").append(artist.name);
+                        }
 
-                        mRepository.insert(new Song("Not detected", pt.track.name, pt.added_at, "No searched yet by your music app"));
+                        mRepository.insert(new Song("Not detected", pt.track.name + misArtistas.toString(), pt.added_at, "No searched yet by your music app"));
                     }
                 }
 
@@ -308,20 +312,29 @@ public class Spotify {
 
                         try {
                             Track track_searched = searchSong(nowPlayingSong);
+
+
                             String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
                             if (track_searched != null) {
                                 Song new_spotifySong = mRepository.getItemstreamingSong(track_searched.name);
 
+                                StringBuilder misArtistas = new StringBuilder().append(" by:");
+                                for (ArtistSimple artist : track_searched.artists) {
+                                    misArtistas.append(" ").append(artist.name);
+                                }
+
+
+
                                 /*now playing was not detected yet*/
                                 if (new_spotifySong == null) {
                                     addSongToSpotify(track_searched);
-                                    mRepository.insert(new Song(nowPlayingSong, track_searched.name, date, getInfo_search()));
+                                    mRepository.insert(new Song(nowPlayingSong, track_searched.name + misArtistas.toString(), date, getInfo_search()));
                                 } else if (!new_spotifySong.getNowPlayingSong().equals("Not detected")) {
                                     addSongToSpotify(track_searched);
-                                    mRepository.insert(new Song(nowPlayingSong, track_searched.name, date, getInfo_search()));
+                                    mRepository.insert(new Song(nowPlayingSong, track_searched.name + misArtistas.toString(), date, getInfo_search()));
 
                                 } else {
-                                    mRepository.updateSong(nowPlayingSong, new_spotifySong.getStreamingName(), getInfo_search());
+                                    mRepository.updateSong(nowPlayingSong, new_spotifySong.getStreamingName() + misArtistas.toString(), getInfo_search());
                                 }
 
 
@@ -429,11 +442,11 @@ public class Spotify {
         TracksPager trackspager = null;
         Track mSongSpotify = null;
         int popularity;
-        String Report = "----------------------------";
+        String Report = "\n-----My search: " + songname + "-----------------------\n";
         info_search_builder.append(Report);
 
         DecimalFormat numberFormat = new DecimalFormat("#.0000");
-        StringBuilder misArtistas;
+        StringBuilder misArtistas = null;
 
         try {
             trackspager = spotifyApi.getService().searchTracks(songname, options);
@@ -539,6 +552,13 @@ public class Spotify {
                     }
                 }
             }
+
+
+            if (mSongSpotify != null && (mSongSpotify.name.toLowerCase().contains("tribute") || misArtistas.toString().toLowerCase().contains("tribute")) && !songname.toLowerCase().contains("tribute")) {
+                mSongSpotify = null;
+            }
+
+
         }
 
         if (info_search_builder.length() > 0) {

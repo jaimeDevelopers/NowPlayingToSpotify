@@ -31,7 +31,7 @@ public class SongRepository {
         mSongDao = db.SongDao();
         //mAllSongs = mSongDao.getAlphabetizedSongs();
 
-        mFewWords = mSongDao.getFewWords();
+        mFewWords = mSongDao.getAllPaging();
 
         //songPaging = new LivePagedListBuilder<>(
         //        mSongDao.getAllPaging(), 50).build();

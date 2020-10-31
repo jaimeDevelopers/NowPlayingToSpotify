@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Song.class}, version = 3, exportSchema = false)
+@Database(entities = {Song.class}, version = 1, exportSchema = false)
 public abstract class SongRoomDatabase extends RoomDatabase {
 
     public abstract SongDao SongDao();
@@ -28,7 +28,6 @@ public abstract class SongRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             SongRoomDatabase.class, "Song_database")
-                            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                             .build();
                 }
             }
@@ -36,19 +35,6 @@ public abstract class SongRoomDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    private static final Migration MIGRATION_1_2 = new Migration(1, 2) {
-        @Override
-        public void migrate(@NonNull SupportSQLiteDatabase database) {
-            Song.upgradeWordTable(database);
-        }
-    };
-
-    private static final Migration MIGRATION_2_3 = new Migration(2, 3) {
-        @Override
-        public void migrate(@NonNull SupportSQLiteDatabase database) {
-            Song.upgradeWordTable(database);
-        }
-    };
 
 
 }

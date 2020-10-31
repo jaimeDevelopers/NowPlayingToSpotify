@@ -75,32 +75,6 @@ public class Song {
         this.infoSearch = infoSearch;
     }
 
-
-    public static void upgradeWordTable(SupportSQLiteDatabase database) {
-
-        ArrayList<String> columns = DButils.getColumns(database, MyValues.TABLE_NAME);
-
-        // 1. Create new table
-        final String TABLE_NAME_TEMP = "_temp" + MyValues.TABLE_NAME;
-        database.execSQL("CREATE TABLE IF NOT EXISTS `" + TABLE_NAME_TEMP + "` (`" + Song + "` TEXT NOT NULL, `" + DBConstants.KEY_RANDOM_NUMBER + "` TEXT, PRIMARY KEY(`" + DBConstants.KEY_WORD + "`))");
-
-        // 2. find common columns.
-        columns.retainAll(DButils.getColumns(database, TABLE_NAME_TEMP));
-        final String COLS = TextUtils.join(",", columns);
-
-        // 3. Copy the data
-        database.execSQL("INSERT INTO " + TABLE_NAME_TEMP + " (" + COLS + ") "
-                + "SELECT " + COLS + " "
-                + "FROM " + DBConstants.TABLE_WORD);
-
-        // 4. Remove the old table
-        database.execSQL("DROP TABLE " + DBConstants.TABLE_WORD);
-
-        // 5. Change the table name to the correct one
-        database.execSQL("ALTER TABLE " + TABLE_NAME_TEMP + " RENAME TO " + DBConstants.TABLE_WORD);
-    }
-
-
     //public String getSong() {
     //    return this.name;
     //}
