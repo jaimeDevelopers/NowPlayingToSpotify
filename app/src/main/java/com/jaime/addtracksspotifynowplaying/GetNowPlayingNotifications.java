@@ -114,17 +114,18 @@ public class GetNowPlayingNotifications extends NotificationListenerService {
                 String title = sbn.getNotification().extras.getString("android.title");
                 String text = sbn.getNotification().extras.getString("android.text");
                 String package_name = sbn.getPackageName();
-                assert title != null;
-                Log.v("Notification title is", title);
-                assert text != null;
-                Log.v("Notification text is", text);
-                Log.v("N. Package Name", package_name);
+                //assert title != null;
+                //Log.v("Notification title is", title);
+                //assert text != null;
+                //Log.v("Notification text is", text);
+                //Log.v("N. Package Name", package_name);
 
                 this.pref = getApplicationContext().getSharedPreferences(MyValues.PREFERENCES, MODE_PRIVATE);
                 String lastsong = pref.getString("last_song", null);         // getting String
-                String date = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
+                //String date = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
                 //String playlistName = pref.getString("playlistName", date + " Now playing");         // getting String
 
+                assert title != null;
                 if (!title.equalsIgnoreCase(lastsong)) {
                     SharedPreferences.Editor editor = this.pref.edit();
                     editor.putString("last_song", title);  // Saving string
@@ -136,7 +137,11 @@ public class GetNowPlayingNotifications extends NotificationListenerService {
                     }
 
 
-                    Source.recognizedSong(title);
+                    try {
+                        Source.recognizedSong(title);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     //Source.searchsong(title);
                     //Source.Create_a_playlist();

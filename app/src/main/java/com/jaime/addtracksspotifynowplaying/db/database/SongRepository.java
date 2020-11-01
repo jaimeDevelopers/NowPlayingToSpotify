@@ -64,7 +64,6 @@ public class SongRepository {
 
     public void updateSong(String nowPlayingSong, String streamingSong, String infoSearch) {
         SongRoomDatabase.databaseWriteExecutor.execute(() -> {
-            System.out.println("nowPlayingSong ---> " + nowPlayingSong + " streamingSong " + streamingSong + "->AAAAA");
             mSongDao.updateSong(nowPlayingSong, streamingSong, infoSearch);
 
         });

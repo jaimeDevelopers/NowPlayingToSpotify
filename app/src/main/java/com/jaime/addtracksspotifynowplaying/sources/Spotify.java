@@ -392,6 +392,7 @@ public class Spotify {
             Init_songsearched = TextUtils.join(" ", song_name_split);
 
             track_searched = searchSongSpotify(Init_songsearched, Init_songsearched, 50);
+
             if (track_searched == null) {
                 track_searched = unsupportedSearch(Init_songsearched);
             }
@@ -413,9 +414,9 @@ public class Spotify {
         process_song = process_song.replaceAll("(?i)feat", " ");
         process_song = process_song.replaceAll("(?i)ft", " ");
         process_song = process_song.replaceAll("(?i)remix", " ");
-        process_song = process_song.replaceAll("  +", " ");
+        process_song = process_song.replaceAll("  +", " ").trim();
 
-        track_searched = searchSongSpotify(process_song, process_song, 10);
+        track_searched = searchSongSpotify(process_song, process_song, 50);
         if (track_searched == null) {
             String[] songsearched_splited = process_song.split(" ");
 
@@ -446,9 +447,12 @@ public class Spotify {
         TracksPager trackspager = null;
         Track mSongSpotify = null;
         int popularity;
-        String Report = "\nMy search " + limit + ": " + songname + ".";
-        info_search_builder.append(Report);
-
+        String Report = "My search " + limit + ": " + songname + ".";
+        if (info_search_builder.length() == 0) {
+            info_search_builder.append(Report);
+        } else {
+            info_search_builder.append("\n").append(Report);
+        }
         DecimalFormat numberFormat = new DecimalFormat("#.0000");
         StringBuilder misArtistas = null;
 
@@ -508,11 +512,7 @@ public class Spotify {
 
                             }
 
-                            if (info_search_builder.length() == 0) {
-                                info_search_builder.append(Report);
-                            } else {
-                                info_search_builder.append("\n\n").append(Report);
-                            }
+                            info_search_builder.append("\n\n").append(Report);
 
 
                             //break outerloop;
@@ -520,18 +520,10 @@ public class Spotify {
                             maxPopularity = popularity;
                             mSongSpotify = mTrackSearched;
                             Report = "*The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
-                            if (info_search_builder.length() == 0) {
-                                info_search_builder.append(Report);
-                            } else {
-                                info_search_builder.append("\n\n").append(Report);
-                            }
-                        } else if (popularity > 20) {
-                            Report = "The JaroWinklerDistance: " + numberFormat.format(JaroWinklerDistance) + "\nStream: " + searched + " with a popularity " + mTrackSearched.popularity + "\nGoogle: " + notification;
-                            if (info_search_builder.length() == 0) {
-                                info_search_builder.append(Report);
-                            } else {
-                                info_search_builder.append("\n\n").append(Report);
-                            }
+
+                            info_search_builder.append("\n\n").append(Report);
+
+
                         }
                     }
                 }

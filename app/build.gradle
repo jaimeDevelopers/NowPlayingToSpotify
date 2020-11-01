@@ -12,8 +12,8 @@ android {
         applicationId "com.jaime.addtracksspotifynowplaying"
         minSdkVersion 27
         targetSdkVersion 30
-        versionCode 33
-        versionName '4.0.6'
+        versionCode 35
+        versionName '4.0.8'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
