@@ -446,7 +446,7 @@ public class Spotify {
         TracksPager trackspager = null;
         Track mSongSpotify = null;
         int popularity;
-        String Report = "\n-----My search: " + songname + "-----------------------";
+        String Report = "\nMy search " + limit + ": " + songname + ".";
         info_search_builder.append(Report);
 
         DecimalFormat numberFormat = new DecimalFormat("#.0000");
