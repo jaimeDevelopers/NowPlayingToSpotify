@@ -7,7 +7,7 @@ Add to a playlist using the Google Pixel's 'Now Playing' ambient feature. When y
 # Privacy policy: 
 Your personal data shared with us will not be given to any third party, under any circumstances. Your data will also never be used by us for any purpose without specific permission.
 
-[Spotify sdk](https://github.com/spotify/android-sdk) will connect you to its service. The login will be using the chrome web and the application does not any email address or password, everything is executed by Spotify API
+[Spotify sdk](https://github.com/spotify/android-sdk) will connect you to its service. The login will be using the chrome web-browser and NowPlayingToSpotify application does not any email address or password, everything is executed by Spotify API
 
 
 
