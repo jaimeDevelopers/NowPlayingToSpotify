@@ -15,7 +15,7 @@ public final class MyValues {
 
     public static final String SPOTIFY_CLIENT_ID = "eca6739ed51f4e10b3b3d6adc865f8bb";
     public static final String SPOTIFY_REDIRECT_URI = "testschema://callback";
-    public static int SPOTIFY_REQUEST_CODE = 1337;
+    public static int SPOTIFY_REQUEST_CODE = 0x11;
 
 
     public static final String TABLE_NAME = "Song_table";

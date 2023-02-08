@@ -17,8 +17,8 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
-            android:label="@string/app_name"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,7 +47,17 @@
 
         <activity
             android:name="com.spotify.sdk.android.auth.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="true">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="${redirectHostName}"
+                    android:scheme="${redirectSchemeName}"/>
+            </intent-filter>
+        </activity>
 
 
         <!--  <activity android:name="com.spotify.sdk.android.authentication.LoginActivity">
@@ -66,7 +76,8 @@
         <service
             android:name=".GetNowPlayingNotifications"
             android:label="@string/service_label"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>

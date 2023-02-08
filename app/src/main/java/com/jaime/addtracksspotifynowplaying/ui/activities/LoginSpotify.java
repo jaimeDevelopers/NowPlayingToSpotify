@@ -3,8 +3,10 @@ package com.jaime.addtracksspotifynowplaying.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
+import android.telecom.Call;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -77,7 +79,7 @@ public class LoginSpotify extends AppCompatActivity {
         String playlistName = pref.getString("playlistName", date + " Now Playing");         // getting String
 
 
-        playlist_name.getEditText().setText(playlistName);
+        Objects.requireNonNull(playlist_name.getEditText()).setText(playlistName);
         EventoTeclado teclado = new EventoTeclado();
         playlist_name.getEditText().setOnEditorActionListener(teclado);
 
@@ -105,6 +107,7 @@ public class LoginSpotify extends AppCompatActivity {
         //sportsTitle.setText(getIntent().getStringExtra("title"));
 
     }
+/*
 
     public void onRequestCodeClicked(View view) {
         runLogin();
@@ -121,11 +124,13 @@ public class LoginSpotify extends AppCompatActivity {
         //Get_Now_Playing_Notifications.accountsPrefs = getApplicationContext().getSharedPreferences(Get_Now_Playing_Notifications.PREFERENCES_ACCOUNT_FILE_NAME, Context.MODE_PRIVATE);
         //Get_Now_Playing_Notifications.namePlaylistPrefs = getApplicationContext().getSharedPreferences(Get_Now_Playing_Notifications.PREFERENCES_NAME_PLAYLIST, Context.MODE_PRIVATE);
 
+
         AuthorizationRequest.Builder builder =
                 new AuthorizationRequest.Builder(MyValues.SPOTIFY_CLIENT_ID, AuthorizationResponse.Type.CODE, MyValues.SPOTIFY_REDIRECT_URI);
-        builder.setScopes(new String[]{"user-read-private", "user-read-email", "user-follow-read",
-                "playlist-read-private", "playlist-read-collaborative", "user-library-read", "user-library-modify",
-                "playlist-modify-public", "playlist-modify-private"});
+        //builder.setScopes(new String[]{"user-read-private", "user-read-email", "user-follow-read",
+        //        "playlist-read-private", "playlist-read-collaborative", "user-library-read", "user-library-modify",
+        //       "playlist-modify-public", "playlist-modify-private"});
+        builder.setScopes(new String[]{"user-read-email"});
         builder.setShowDialog(false);
         builder.setCampaign("your-campaign-token");
 
@@ -133,14 +138,16 @@ public class LoginSpotify extends AppCompatActivity {
         //        "playlist-read-private", "playlist-read-collaborative", "user-library-read", "user-library-modify",
         //        "playlist-modify-public", "playlist-modify-private", "user-follow-modify"});
 
-        try {
+        //try {
             AuthorizationRequest request = builder.build();
             AuthorizationClient.openLoginActivity(this, MyValues.SPOTIFY_REQUEST_CODE, request);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+       // } catch (Exception e) {
+       //     e.printStackTrace();
+       // }
 
     }
+
+*/
 
 
     @Override
@@ -152,6 +159,7 @@ public class LoginSpotify extends AppCompatActivity {
 
             AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
             if (response.getType() == AuthorizationResponse.Type.CODE) {
+                System.out.println("AuthorizationResponse.Type.CODE: " + AuthorizationResponse.Type.CODE);
 
                 final String code = response.getCode();
                 Thread t = new Thread() {
@@ -173,7 +181,7 @@ public class LoginSpotify extends AppCompatActivity {
                             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
                             writer.write("grant_type=authorization_code&");
                             writer.write("code=" + code + "&");
-                            writer.write("redirect_uri=" + MyValues.SPOTIFY_REDIRECT_URI + "&");
+                            writer.write("redirect_uri=" + getRedirectUri().toString() + "&");
                             writer.write("client_id=" + MyValues.SPOTIFY_CLIENT_ID + "&");
                             writer.write("client_secret=" + "765e6769347547bfb48aa13a67f0e97a");
                             writer.flush();
@@ -256,12 +264,14 @@ public class LoginSpotify extends AppCompatActivity {
 
     }
 
+
+
     public void onClearCredentialsClicked(View view) {
         SharedPreferences pref = getSharedPreferences(MyValues.PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean("SPOTIFY_ENABLED", false);
         editor.apply();
-        AuthorizationClient.clearCookies(this);
+        //AuthorizationClient.clearCookies(this);
     }
 
 
@@ -282,7 +292,7 @@ public class LoginSpotify extends AppCompatActivity {
         super.onResume();
         String date = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
         String playlistName = pref.getString("playlistName", date + " Now Playing");         // getting String
-        playlist_name.getEditText().setText(playlistName);
+        Objects.requireNonNull(playlist_name.getEditText()).setText(playlistName);
     }
 
     public void onRequestsynchronize(View view) {
@@ -363,5 +373,57 @@ public class LoginSpotify extends AppCompatActivity {
         }
     }
 
+
+    public static final String CLIENT_ID = "089d841ccc194c10a77afad9e1c11d54";
+    public static final String REDIRECT_URI = "spotify-sdk://auth";
+    public static final int AUTH_TOKEN_REQUEST_CODE = 0x10;
+    public static final int AUTH_CODE_REQUEST_CODE = 0x11;
+
+    public void onRequestCodeClicked(View view) {
+        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.CODE);
+        AuthorizationClient.openLoginActivity(this, AUTH_CODE_REQUEST_CODE, request);
+    }
+
+    public void onRequestTokenClicked(View view) {
+        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
+        AuthorizationClient.openLoginActivity(this, AUTH_TOKEN_REQUEST_CODE, request);
+    }
+
+    private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
+        return new AuthorizationRequest.Builder(MyValues.SPOTIFY_CLIENT_ID, type, getRedirectUri().toString())
+                .setShowDialog(false)
+                .setScopes(new String[]{"user-read-private", "streaming", "user-read-email", "user-follow-read",
+                        "playlist-read-private", "playlist-read-collaborative", "user-library-read", "user-library-modify",
+                        "playlist-modify-public", "playlist-modify-private", "user-follow-modify"})
+                .setCampaign("your-campaign-token")
+                .build();
+    }
+
+    private Uri getRedirectUri() {
+        return Uri.parse(REDIRECT_URI);
+    }
+
+
+    private String mAccessToken;
+    private String mAccessCode;
+    private Call mCall;
+
+    /*
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        final AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, data);
+
+        if (0x10 == requestCode) {
+            mAccessToken = response.getAccessToken();
+            //updateTokenView();
+        } else if (0x11 == requestCode) {
+            mAccessCode = response.getCode();
+            //updateCodeView();
+        }
+    }
+
+
+     */
 
 }
