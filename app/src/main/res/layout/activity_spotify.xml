@@ -120,15 +120,6 @@
                 android:text="@string/btn_req_code" />
 
 
-            <Button
-                android:id="@+id/btn_clear"
-                style="@style/buttonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="8dp"
-                android:onClick="onClearCredentialsClicked"
-                android:text="@string/btn_clear_credentials" />
         </LinearLayout>
 
     </ScrollView>

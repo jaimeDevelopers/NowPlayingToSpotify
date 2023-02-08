@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/layout/activity_music_detail.xml" value="0.184375" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.184375" />
+        <entry key="app/src/main/res/layout/activity_spotify.xml" value="0.184375" />
+        <entry key="app/src/main/res/layout/cards_layout.xml" value="0.184375" />
+        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.184375" />
+        <entry key="app/src/main/res/xml/fragment_settings.xml" value="0.184375" />
+      </map>
+    </option>
+  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="org.jetbrains.annotations.Nullable" />
     <option name="myDefaultNotNull" value="androidx.annotation.NonNull" />

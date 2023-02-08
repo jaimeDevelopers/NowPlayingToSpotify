@@ -1,19 +1,17 @@
 {
-  "version": 1,
+  "version": 2,
   "artifactType": {
     "type": "APK",
     "kind": "Directory"
   },
   "applicationId": "com.jaime.addtracksspotifynowplaying",
-  "variantName": "release",
+  "variantName": "processReleaseResources",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
-      "properties": [],
-      "versionCode": 35,
-      "versionName": "4.0.8",
-      "enabled": true,
+      "versionCode": 36,
+      "versionName": "4.1.0",
       "outputFile": "app-release.apk"
     }
   ]

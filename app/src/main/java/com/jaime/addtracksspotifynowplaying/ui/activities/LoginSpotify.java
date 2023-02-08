@@ -265,14 +265,7 @@ public class LoginSpotify extends AppCompatActivity {
     }
 
 
-
-    public void onClearCredentialsClicked(View view) {
-        SharedPreferences pref = getSharedPreferences(MyValues.PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("SPOTIFY_ENABLED", false);
-        editor.apply();
-        //AuthorizationClient.clearCookies(this);
-    }
+    
 
 
     void hint_setOnFocusChangeListener() {

@@ -135,6 +135,25 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
+            Preference github = findPreference("githubCode");
+            github.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    String urlString = "https://github.com/jaimeDevelopers/NowPlayingToSpotify";
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setPackage("com.android.chrome");
+                    try {
+                        context.startActivity(intent);
+                    } catch (ActivityNotFoundException ex) {
+                        // Chrome browser presumably not installed so allow user to choose instead
+                        intent.setPackage(null);
+                        context.startActivity(intent);
+                    }
+                    return true;
+                }
+            });
+
 
             Preference button_email = findPreference("emailme");
             button_email.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

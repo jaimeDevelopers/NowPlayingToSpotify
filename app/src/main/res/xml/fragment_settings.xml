@@ -63,8 +63,15 @@
         <Preference
             android:id="@+id/review"
             app:key="review"
-            app:summary="This app does not collect any data. It uses Kaaes API and Spotify API"
+            app:summary="This app does not collect any data. It uses Kaaes API and Spotify API, so we don't store any email or password."
             app:title="Do you like?" />
+
+        <Preference
+            android:id="@+id/githubCode"
+            android:enabled="true"
+            app:key="githubCode"
+            app:summary="Visit the code, how it works"
+            app:title="Check the code out" />
 
 
         <SwitchPreferenceCompat
@@ -78,6 +85,7 @@
             android:enabled="false"
             app:key="lastfm"
             app:title="lastfm is not stable for now" />
+
 
 
         <!--        <Preference-->
